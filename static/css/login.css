@@ -1,0 +1,149 @@
+/* =====================================================
+   LOGIN PAGE
+===================================================== */
+
+.auth-card{
+
+    max-width:500px;
+
+    width:100%;
+
+    margin:auto;
+
+}
+
+.auth-form{
+
+    margin-top:25px;
+
+}
+
+.password-toggle{
+
+    cursor:pointer;
+
+    color:var(--text-light);
+
+    transition:var(--transition);
+
+}
+
+.password-toggle:hover{
+
+    color:var(--primary);
+
+}
+
+/* =====================================================
+   FORM OPTIONS
+===================================================== */
+
+.form-options{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin:18px 0 28px;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+}
+
+.remember-me{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    cursor:pointer;
+
+    color:var(--text-light);
+
+    font-size:14px;
+
+    user-select:none;
+
+}
+
+.remember-me input{
+
+    width:16px;
+
+    height:16px;
+
+    accent-color:var(--primary);
+
+    cursor:pointer;
+
+}
+
+.forgot-password{
+
+    text-decoration:none;
+
+    color:var(--primary);
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:var(--transition);
+
+}
+
+.forgot-password:hover{
+
+    color:var(--primary-dark);
+
+}
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+.auth-card{
+
+    animation:fadeUp .8s ease;
+
+}
+
+.auth-left{
+
+    animation:fadeUp 1s ease;
+
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:768px){
+
+    .form-options{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:15px;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .auth-card{
+
+        max-width:100%;
+
+    }
+
+}

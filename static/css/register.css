@@ -1,0 +1,137 @@
+/* =====================================================
+   REGISTER PAGE
+===================================================== */
+
+.auth-card{
+
+    max-width:520px;
+
+    width:100%;
+
+    margin:auto;
+
+}
+
+.auth-form{
+
+    margin-top:25px;
+
+}
+
+.password-toggle{
+
+    cursor:pointer;
+
+    color:var(--text-light);
+
+    transition:var(--transition);
+
+}
+
+.password-toggle:hover{
+
+    color:var(--primary);
+
+}
+
+.tech-stack{
+
+    margin-top:50px;
+
+}
+
+.tech-stack h4{
+
+    color:#ffffff;
+
+    margin-bottom:15px;
+
+    font-size:18px;
+
+    font-weight:700;
+
+}
+
+.tech-list{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+}
+
+.tech-list span{
+
+    padding:10px 18px;
+
+    border-radius:30px;
+
+    background:rgba(255,255,255,.12);
+
+    border:1px solid rgba(255,255,255,.18);
+
+    color:#ffffff;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    backdrop-filter:blur(12px);
+
+    transition:var(--transition);
+
+}
+
+.tech-list span:hover{
+
+    transform:translateY(-3px);
+
+    background:rgba(255,255,255,.18);
+
+}
+
+.feature-item{
+
+    transition:var(--transition);
+
+}
+
+.feature-item:hover{
+
+    transform:translateX(8px);
+
+}
+
+.auth-card{
+
+    animation:fadeUp .8s ease;
+
+}
+
+.auth-left{
+
+    animation:fadeUp 1s ease;
+
+}
+
+@media(max-width:768px){
+
+    .tech-stack{
+
+        display:none;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .auth-card{
+
+        max-width:100%;
+
+    }
+
+}

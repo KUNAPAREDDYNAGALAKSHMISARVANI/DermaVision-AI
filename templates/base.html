@@ -119,31 +119,41 @@
 
         <nav class="desktop-nav">
 
-            <a href="{{ url_for('home') }}" data-lang="home">
-                Home
-            </a>
+    <a href="{{ url_for('home') }}">Home</a>
 
-            <a href="{{ url_for('dashboard') }}" data-lang="dashboard">
-                Dashboard
-            </a>
+    {% if session.get("user_id") %}
 
-            <a href="{{ url_for('history') }}" data-lang="history">
-                History
-            </a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
 
-            <a href="{{ url_for('about') }}" data-lang="about">
-                About
-            </a>
+        <a href="{{ url_for('history') }}">History</a>
 
-            <a href="{{ url_for('help') }}" data-lang="help">
-                Help
-            </a>
+        <a href="{{ url_for('about') }}">About</a>
 
-            <a href="{{ url_for('settings') }}" data-lang="settings">
-                Settings
-            </a>
+        <a href="{{ url_for('help') }}">Help</a>
 
-        </nav>
+        <a href="{{ url_for('settings') }}">Settings</a>
+
+        <a href="{{ url_for('auth.logout') }}">
+            Logout
+        </a>
+
+    {% else %}
+
+        <a href="{{ url_for('about') }}">About</a>
+
+        <a href="{{ url_for('help') }}">Help</a>
+
+        <a href="{{ url_for('auth.login') }}">
+            Login
+        </a>
+
+        <a href="{{ url_for('auth.register') }}">
+            Register
+        </a>
+
+    {% endif %}
+
+  </nav>
 
         <button class="mobile-menu-btn"
                 id="mobileMenuBtn">
@@ -155,33 +165,59 @@
     </div>
 
     <div class="mobile-menu"
-         id="mobileMenu">
+     id="mobileMenu">
 
-        <a href="{{ url_for('home') }}" data-lang="home">
-            Home
-        </a>
+    <a href="{{ url_for('home') }}">
+        Home
+    </a>
 
-        <a href="{{ url_for('dashboard') }}" data-lang="dashboard">
+    {% if session.get("user_id") %}
+
+        <a href="{{ url_for('dashboard') }}">
             Dashboard
         </a>
 
-        <a href="{{ url_for('history') }}" data-lang="history">
+        <a href="{{ url_for('history') }}">
             History
         </a>
 
-        <a href="{{ url_for('about') }}" data-lang="about">
+        <a href="{{ url_for('about') }}">
             About
         </a>
 
-        <a href="{{ url_for('help') }}" data-lang="help">
+        <a href="{{ url_for('help') }}">
             Help
         </a>
 
-        <a href="{{ url_for('settings') }}" data-lang="settings">
+        <a href="{{ url_for('settings') }}">
             Settings
         </a>
 
-    </div>
+        <a href="{{ url_for('auth.logout') }}">
+            Logout
+        </a>
+
+    {% else %}
+
+        <a href="{{ url_for('about') }}">
+            About
+        </a>
+
+        <a href="{{ url_for('help') }}">
+            Help
+        </a>
+
+        <a href="{{ url_for('auth.login') }}">
+            Login
+        </a>
+
+        <a href="{{ url_for('auth.register') }}">
+            Register
+        </a>
+
+    {% endif %}
+
+</div>
 
 </header>
 

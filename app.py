@@ -3,14 +3,17 @@ import numpy as np
 import tensorflow as tf
 import uuid
 from database import save_scan
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, session
 from PIL import Image
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from flask import send_file
-
-
+from auth import auth
+from utils import login_required
+from functools import wraps
 app = Flask(__name__)
+app.secret_key = "dermavision_ai_secret_key_2026"
+app.register_blueprint(auth)
 
 
 UPLOAD_FOLDER = "static/uploads"
@@ -176,12 +179,27 @@ disease_info = {
 
 }
 
+def login_required(f):
+
+    @wraps(f)
+
+    def decorated_function(*args, **kwargs):
+
+        if "user_id" not in session:
+
+            return redirect(url_for("auth.login"))
+
+        return f(*args, **kwargs)
+
+    return decorated_function
+
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
 @app.route("/dashboard")
+@login_required
 def dashboard():
 
     import sqlite3
@@ -194,13 +212,19 @@ def dashboard():
     # -------------------------------
     # Total scans
     # -------------------------------
-    cursor.execute("SELECT COUNT(*) FROM scans")
+    cursor.execute(
+    "SELECT COUNT(*) FROM scans WHERE user_id=?",
+    (session["user_id"],)
+)
     total_scans = cursor.fetchone()[0]
 
     # -------------------------------
     # Average confidence
     # -------------------------------
-    cursor.execute("SELECT AVG(confidence) FROM scans")
+    cursor.execute(
+    "SELECT AVG(confidence) FROM scans WHERE user_id=?",
+    (session["user_id"],)
+)
     avg_confidence = cursor.fetchone()[0]
 
     if avg_confidence is None:
@@ -212,11 +236,12 @@ def dashboard():
     # Latest Scan
     # -------------------------------
     cursor.execute("""
-        SELECT *
-        FROM scans
-        ORDER BY scan_date DESC
-        LIMIT 1
-    """)
+    SELECT *
+    FROM scans
+    WHERE user_id=?
+    ORDER BY scan_date DESC
+    LIMIT 1
+    """, (session["user_id"],))
 
     latest_scan = cursor.fetchone()
 
@@ -224,11 +249,12 @@ def dashboard():
     # Recent scans
     # -------------------------------
     cursor.execute("""
-        SELECT *
-        FROM scans
-        ORDER BY scan_date DESC
-        LIMIT 5
-    """)
+    SELECT *
+    FROM scans
+    WHERE user_id=?
+    ORDER BY scan_date DESC
+    LIMIT 5
+    """, (session["user_id"],))
 
     recent_scans = cursor.fetchall()
 
@@ -236,15 +262,12 @@ def dashboard():
     # Disease Distribution
     # -------------------------------
     cursor.execute("""
-
-        SELECT disease,
-               COUNT(*) as total
-
-        FROM scans
-
-        GROUP BY disease
-
-    """)
+    SELECT disease,
+    COUNT(*) as total
+    FROM scans
+    WHERE user_id=?
+    GROUP BY disease
+    """, (session["user_id"],))
 
     disease_rows = cursor.fetchall()
 
@@ -260,18 +283,13 @@ def dashboard():
     # Average Confidence Per Disease
     # -------------------------------
     cursor.execute("""
-
-        SELECT
-            disease,
-            ROUND(AVG(confidence),2) AS avg_confidence
-
-        FROM scans
-
-        GROUP BY disease
-
-        ORDER BY avg_confidence DESC
-
-    """)
+    SELECT disease,
+    ROUND(AVG(confidence),2) AS avg_confidence
+    FROM scans
+    WHERE user_id=?
+    GROUP BY disease
+    ORDER BY avg_confidence DESC
+    """, (session["user_id"],))
 
     confidence_rows = cursor.fetchall()
     confidence_labels = []
@@ -351,6 +369,7 @@ def dashboard():
 
 
 @app.route("/report/<int:scan_id>")
+@login_required
 def report(scan_id):
 
     import sqlite3
@@ -366,9 +385,9 @@ def report(scan_id):
 
         FROM scans
 
-        WHERE id=?
+        WHERE id=? AND user_id=?
 
-    """, (scan_id,))
+    """, (scan_id,session["user_id"]))
 
     scan = cursor.fetchone()
 
@@ -399,6 +418,7 @@ def report(scan_id):
     )
     
 @app.route("/download_pdf/<int:scan_id>")
+@login_required
 def download_pdf(scan_id):
 
     import sqlite3
@@ -518,8 +538,8 @@ def delete_scan(scan_id):
     cursor = connection.cursor()
 
     cursor.execute(
-        "SELECT image FROM scans WHERE id=?",
-        (scan_id,)
+        "SELECT image FROM scans WHERE id=? AND user_id=?",
+        (scan_id, session["user_id"])
     )
 
     scan = cursor.fetchone()
@@ -532,8 +552,8 @@ def delete_scan(scan_id):
             os.remove(image_path)
 
         cursor.execute(
-            "DELETE FROM scans WHERE id=?",
-            (scan_id,)
+            "DELETE FROM scans WHERE id=? AND user_id=?",
+            (scan_id, session["user_id"])
         )
 
         connection.commit()
@@ -543,6 +563,7 @@ def delete_scan(scan_id):
     return redirect(url_for("history"))
 
 @app.route("/history")
+@login_required
 def history():
 
     import sqlite3
@@ -555,8 +576,9 @@ def history():
     cursor.execute("""
         SELECT *
         FROM scans
+        WHERE user_id=?
         ORDER BY scan_date DESC
-    """)
+    """, (session["user_id"],))
 
     scans = cursor.fetchall()
 
@@ -584,6 +606,7 @@ def settings():
     return render_template("settings.html")
 
 @app.route("/clear_history", methods=["POST"])
+@login_required
 def clear_history():
 
     import sqlite3
@@ -594,7 +617,7 @@ def clear_history():
     cursor = connection.cursor()
 
     # Get all image paths
-    cursor.execute("SELECT image FROM scans")
+    cursor.execute("SELECT image FROM scans WHERE user_id=?", (session["user_id"],))
     scans = cursor.fetchall()
 
     # Delete uploaded images
@@ -606,10 +629,7 @@ def clear_history():
             os.remove(image_path)
 
     # Delete all scan records
-    cursor.execute("DELETE FROM scans")
-
-    # Reset auto increment
-    cursor.execute("DELETE FROM sqlite_sequence WHERE name='scans'")
+    cursor.execute("DELETE FROM scans WHERE user_id=?", (session["user_id"],))
 
     connection.commit()
     connection.close()
@@ -617,8 +637,9 @@ def clear_history():
     return "", 200
 
 @app.route("/predict", methods=["POST"])
+@login_required
 def predict():
-
+    
     if "image" not in request.files:
         return render_template(
             "index.html",
@@ -699,6 +720,7 @@ def predict():
         )
         
         save_scan(
+            session["user_id"],
             database_image,
             disease,
             confidence
