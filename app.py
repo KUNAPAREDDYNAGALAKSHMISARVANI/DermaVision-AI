@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import tensorflow as tf
-
+import uuid
 from database import save_scan
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from PIL import Image
@@ -649,13 +649,17 @@ def predict():
         )
 
 
+    # Create a unique filename
+    extension = image.filename.rsplit(".", 1)[1].lower()
+    unique_filename = f"{uuid.uuid4()}.{extension}"
+
     image_path = os.path.join(
         app.config["UPLOAD_FOLDER"],
-        image.filename
+        unique_filename
     )
 
-
     image.save(image_path)
+
     database_image = image_path.replace("\\", "/").replace("static/", "")
 
     try:
@@ -705,8 +709,8 @@ def predict():
 
         return render_template(
         "result.html",
-        image_path=image_path,
-        image_url="/" + image_path.replace("\\","/"),
+        image_path=database_image,
+        image_url=url_for("static", filename=database_image),
         disease=disease,
         confidence=confidence,
         disease_info=info
