@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | DermaVision AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-page">
+
+    <!-- ========================= -->
+    <!-- Dashboard Hero -->
+    <!-- ========================= -->
+
+    <section class="dashboard-hero">
+
+        <div class="hero-content">
+
+            <span class="dashboard-badge">
+                AI Healthcare Analytics
+            </span>
+
+            <h1 data-lang="dashboard_hero_title">
+                Welcome to Your Dashboard
+            </h1>
+
+            <p data-lang="dashboard_hero_desc">
+                Monitor your AI skin analysis, review previous scans,
+                and track your skin health journey with detailed analytics.
+            </p>
+
+            <a href="{{ url_for('home') }}" class="primary-btn" data-lang="start_new_scan">
+                <i class="fas fa-camera"></i>
+                Start New Scan
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- Statistics -->
+    <!-- ========================= -->
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+
+                <i class="fas fa-images"></i>
+
+            </div>
+
+            <div>
+
+                <h2>{{ total_scans }}</h2>
+
+                <p data-lang="total_scans">Total Scans</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon green">
+
+                <i class="fas fa-chart-line"></i>
+
+            </div>
+
+            <div>
+
+                <h2>{{ avg_confidence }}%</h2>
+
+                <p data-lang="average_confidence">Average Confidence</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon orange">
+
+                <i class="fas fa-virus"></i>
+
+            </div>
+
+            <div>
+
+                <h2>
+
+                    {% if latest_scan %}
+                        {{ latest_scan["disease"] }}
+                    {% else %}
+                        --
+                    {% endif %}
+
+                </h2>
+
+                <p data-lang="latest_prediction">Latest Prediction</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon red">
+
+                <i class="fas fa-calendar"></i>
+
+            </div>
+
+            <div>
+
+                <h2>
+
+                    {% if latest_scan %}
+                        {{ latest_scan["scan_date"][:10] }}
+                    {% else %}
+                        --
+                    {% endif %}
+
+                </h2>
+
+                <p data-lang="latest_scan">Latest Scan</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- Charts -->
+    <!-- ========================= -->
+
+    <section class="charts-grid">
+
+        <div class="chart-card">
+
+                <div class="card-header">
+
+                <h2 data-lang="disease_distribution">Disease Distribution</h2>
+
+            </div>
+
+            <canvas id="diseaseChart"></canvas>
+
+        </div>
+
+        <div class="chart-card">
+
+                <div class="card-header">
+
+                <h2 data-lang="confidence_trend">Average AI Confidence by Disease</h2>
+
+            </div>
+
+            <canvas id="confidenceChart"></canvas>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- Recent Scans -->
+    <!-- ========================= -->
+
+    <section class="recent-section">
+
+            <div class="section-header">
+
+            <h2 data-lang="recent_ai_scans">Recent AI Scans</h2>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Image</th>
+
+                        <th>Disease</th>
+
+                        <th>Confidence</th>
+
+                        <th>Date</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for scan in recent_scans %}
+
+                    <tr>
+
+                        <td>
+
+                         <img
+                            src="{{ url_for('static', filename=scan['image']) }}"
+                            class="scan-thumb"
+                            alt="Scan Image">
+
+                        </td>
+
+                        <td>
+
+                            {{ scan["disease"] }}
+
+                        </td>
+
+                        <td>
+
+                            {{ scan["confidence"] }}%
+
+                        </td>
+
+                        <td>
+
+                            {{ scan["scan_date"] }}
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- Quick Actions -->
+    <!-- ========================= -->
+
+    <section class="quick-actions">
+
+        <div class="action-card">
+
+            <i class="fas fa-camera"></i>
+
+            <h3>New Scan</h3>
+
+            <p>Upload another skin image.</p>
+
+            <a href="{{ url_for('home') }}" class="primary-btn">
+
+                Scan Now
+
+            </a>
+
+        </div>
+
+        <div class="action-card">
+
+            <i class="fas fa-history"></i>
+
+            <h3>History</h3>
+
+            <p>View previous AI analyses.</p>
+
+            <a href="{{ url_for('history') }}" class="primary-btn">
+
+                View History
+
+            </a>
+
+        </div>
+
+        <div class="action-card">
+
+            <i class="fas fa-file-medical"></i>
+
+            <h3>Reports</h3>
+
+            <p>Generate printable reports.</p>
+
+            <button class="primary-btn">
+
+                Coming Soon
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- Health Tip -->
+    <!-- ========================= -->
+
+    <section class="health-tip">
+
+        <div class="tip-icon">
+
+            <i class="fas fa-heart"></i>
+
+        </div>
+
+        <div>
+
+           <h2>{{ health_tip.title }}</h2>
+
+<p>
+
+    {{ health_tip.message }}
+
+</p>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const diseaseLabels = {{ disease_labels | tojson }};
+const diseaseCounts = {{ disease_counts | tojson }};
+const confidenceLabels = {{ confidence_labels | tojson }};
+const confidenceValues = {{ confidence_values | tojson }};
+
+console.log("Disease Labels:", diseaseLabels);
+console.log("Disease Counts:", diseaseCounts);
+console.log("Confidence Labels:", confidenceLabels);
+console.log("Confidence Values:", confidenceValues);
+
+</script>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+{% endblock %}

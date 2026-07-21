@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Settings | DermaVision AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="settings-page">
+
+    <!-- Hero -->
+
+    <section class="settings-hero">
+
+        <span class="hero-badge" data-lang="general_settings">
+
+            Application Settings
+
+        </span>
+
+        <h1 data-lang="settings_hero_title">
+
+            Customize Your Experience
+
+        </h1>
+
+        <p data-lang="settings_hero_desc">
+
+            Configure DermaVision AI preferences, view application
+            information, and manage system settings.
+
+        </p>
+
+    </section>
+
+
+    <!-- General Settings -->
+
+    <section class="settings-card">
+
+        <h2 data-lang="general_settings">
+
+            <i class="fas fa-sliders-h"></i>
+
+            General Settings
+
+        </h2>
+
+        <div class="setting-item">
+
+            <div>
+
+                <h3 data-lang="language_label">Language</h3>
+
+                <p data-lang="select_language">Select your preferred language.</p>
+
+            </div>
+
+            <select id="languageSelect">
+                <option value="en">English</option>
+                <option value="te">Telugu</option>
+                <option value="hi">Hindi</option>
+            </select>
+
+        </div>
+
+        <div class="setting-item">
+
+            <div>
+
+                <h3 data-lang="dark_mode">🌙 Dark Mode</h3>
+
+                <p data-lang="dark_mode_desc">
+                    Switch between light and dark appearance.
+                </p>
+
+            </div>
+
+            <label class="switch">
+
+                <input
+                    type="checkbox"
+                    id="themeToggle">
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+        <div class="setting-item">
+
+            <div>
+
+                <h3 data-lang="notifications">Notifications</h3>
+
+                <p data-lang="notifications_desc">Receive updates and reminders.</p>
+
+            </div>
+
+                <span class="coming-soon" data-lang="coming_soon">
+
+                Coming Soon
+
+            </span>
+
+        </div>
+        <div class="setting-item">
+
+            <div class="setting-item">
+
+    <div>
+
+        <h3 data-lang="clear_scan_history">🗑️ Clear Scan History</h3>
+
+        <p data-lang="clear_scan_history_desc">Delete all previously stored scan history.</p>
+
+    </div>
+
+    <form action="{{ url_for('clear_history') }}" method="POST">
+
+        <button
+    id="clearHistoryBtn"
+    type="button"
+    class="primary-btn"
+    data-lang-value="clear_button">
+
+    Clear
+
+</button>
+
+    </form>
+
+</div>
+<div class="setting-item">
+
+    <div>
+
+        <h3 data-lang="reset_preferences">♻️ Reset Preferences</h3>
+
+        <p data-lang="reset_preferences_desc">Restore default language and appearance.</p>
+
+    </div>
+
+    <button id="resetPreferencesBtn" class="secondary-btn" data-lang-value="reset_button">
+        Reset
+    </button>
+
+</div>
+
+    </section>
+
+    <!-- Features -->
+
+    <section class="settings-card">
+
+        <h2 data-lang="enabled_features">
+
+            <i class="fas fa-star"></i>
+
+            Enabled Features
+
+        </h2>
+
+        <div class="feature-grid">
+
+            <div class="feature">
+
+                <i class="fas fa-check-circle"></i>
+
+                <span data-lang="ai_disease_detection">AI Disease Detection</span>
+
+            </div>
+
+            <div class="feature">
+
+                <i class="fas fa-check-circle"></i>
+
+                <span data-lang="dashboard_analytics">Dashboard Analytics</span>
+
+            </div>
+
+            <div class="feature">
+
+                <i class="fas fa-check-circle"></i>
+
+                <span data-lang="scan_history">Scan History</span>
+
+            </div>
+
+            <div class="feature">
+
+                <i class="fas fa-check-circle"></i>
+
+                <span data-lang="pdf_reports">PDF Reports</span>
+
+            </div>
+
+            <div class="feature">
+
+                <i class="fas fa-check-circle"></i>
+
+                <span data-lang="medical_recommendations">Medical Recommendations</span>
+
+            </div>
+
+            <div class="feature">
+
+                <i class="fas fa-check-circle"></i>
+
+                <span data-lang="ai_confidence_score">AI Confidence Score</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+</div>
+{% block extra_js %}
+
+<script>
+
+const themeToggle = document.getElementById("themeToggle");
+
+if (themeToggle) {
+    const isDarkMode = document.documentElement.classList.contains("dark-mode") || document.body.classList.contains("dark-mode");
+    themeToggle.checked = isDarkMode;
+
+    themeToggle.addEventListener("change", () => {
+        toggleTheme();
+        themeToggle.checked = document.documentElement.classList.contains("dark-mode") || document.body.classList.contains("dark-mode");
+    });
+}
+
+</script>
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}
+
+{% endblock %}

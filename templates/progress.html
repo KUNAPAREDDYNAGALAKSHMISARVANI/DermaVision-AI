@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}
+Progress Tracker | DermaVision AI
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/progress.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="progress-page">
+
+<section class="progress-hero">
+
+<div class="hero-left">
+
+<span class="progress-badge">
+
+<i class="fas fa-chart-line"></i>
+
+<span data-lang="progress_tracker">AI Progress Tracker</span>
+
+</span>
+
+<h1 data-lang="progress_tracker">
+
+Track Your
+
+<span>Skin Recovery</span>
+
+</h1>
+
+<p data-lang="compare_previous_scans">
+
+Compare previous scans,
+observe AI confidence changes,
+and monitor your skin condition
+through time.
+
+</p>
+
+</div>
+
+<div class="hero-right">
+
+<div class="progress-icon">
+
+<i class="fas fa-heart-pulse"></i>
+
+</div>
+
+</div>
+
+</section>
+<section class="progress-summary">
+
+<div class="summary-card">
+
+<i class="fas fa-images"></i>
+
+<h2>3</h2>
+
+<p data-lang="total_comparison_scans">Total Comparison Scans</p>
+
+</div>
+
+<div class="summary-card">
+
+<i class="fas fa-arrow-trend-down"></i>
+
+<h2>28%</h2>
+
+<p data-lang="improvement">Improvement</p>
+
+</div>
+
+<div class="summary-card">
+
+<i class="fas fa-brain"></i>
+
+<h2>87%</h2>
+
+<p data-lang="average_confidence_label">Average Confidence</p>
+
+</div>
+
+</section>
+<section class="comparison-section">
+
+<div class="section-title">
+
+<i class="fas fa-code-compare"></i>
+
+<h2 data-lang="before_vs_after">Before vs After</h2>
+
+</div>
+
+<div class="comparison-grid">
+
+<div class="compare-card">
+
+<h3 data-lang="previous_scan">Previous Scan</h3>
+
+<img src="{{ url_for('static',
+filename='images/sample_before.jpg') }}">
+
+<p>
+
+Prediction:
+Eczema
+
+</p>
+
+<p>
+
+Confidence:
+91%
+
+</p>
+
+</div>
+
+<div class="compare-card">
+
+<h3 data-lang="latest_scan_label">Latest Scan</h3>
+
+<img src="{{ url_for('static',
+filename='images/sample_after.jpg') }}">
+
+<p>
+
+Prediction:
+Mild Eczema
+
+</p>
+
+<p>
+
+Confidence:
+67%
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+<section class="glass-card">
+
+<div class="section-title">
+
+<i class="fas fa-chart-area"></i>
+
+<h2 data-lang="ai_recovery_analysis">AI Recovery Analysis</h2>
+<p data-lang="according_scans">
+
+According to previous scans,
+the affected skin appears to show signs of improvement.
+
+Continue following the
+recommended skincare routine
+and consult your dermatologist
+if symptoms worsen.
+
+</p>
+</div>
+
+<p>
+
+According to previous scans,
+the affected skin appears to
+show signs of improvement.
+
+Continue following the
+recommended skincare routine
+and consult your dermatologist
+if symptoms worsen.
+
+</p>
+
+</section>
+<section class="history-actions">
+
+<a href="{{ url_for('home') }}"
+class="primary-btn" data-lang="new_scan">
+
+New Scan
+
+</a>
+
+<a href="{{ url_for('history') }}"
+class="secondary-btn" data-lang="history_button">
+
+History
+
+</a>
+
+</section>
+
+</div>
+
+{% endblock %}

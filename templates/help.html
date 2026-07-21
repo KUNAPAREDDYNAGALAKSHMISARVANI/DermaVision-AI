@@ -1,0 +1,395 @@
+{% extends "base.html" %}
+
+{% block title %}Help | DermaVision AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="help-page">
+
+    <!-- Hero -->
+
+    <section class="help-hero">
+
+        <span class="hero-badge">
+
+            Help Center
+
+        </span>
+
+        <h1 data-lang="how_can_we_help">
+
+            How Can We Help You?
+
+        </h1>
+
+        <p data-lang="learn_how_to_use">
+
+            Learn how to use DermaVision AI effectively, improve scan accuracy,
+            understand AI predictions, and find answers to common questions.
+
+        </p>
+
+    </section>
+
+
+    <!-- Getting Started -->
+
+    <section class="help-card">
+
+        <h2 data-lang="getting_started">
+
+            <i class="fas fa-play-circle"></i>
+
+            Getting Started
+
+        </h2>
+
+        <div class="steps">
+
+            <div class="step">
+
+                <span>1</span>
+
+                Upload a clear image of the affected skin area.
+
+            </div>
+
+            <div class="step">
+
+                <span>2</span>
+
+                Crop the image to focus only on the affected region.
+
+            </div>
+
+            <div class="step">
+
+                <span>3</span>
+
+                Click <b>Analyze with AI</b>.
+
+            </div>
+
+            <div class="step">
+
+                <span>4</span>
+
+                Review your AI-generated report and recommendations.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Formats -->
+
+    <section class="help-card">
+
+        <h2 data-lang="supported_image_formats">
+
+            <i class="fas fa-image"></i>
+
+            Supported Image Formats
+
+        </h2>
+
+        <div class="format-grid">
+
+            <div class="format-card">JPG</div>
+
+            <div class="format-card">JPEG</div>
+
+            <div class="format-card">PNG</div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Tips -->
+
+    <section class="help-card">
+
+        <h2 data-lang="tips_for_best_accuracy">
+
+            <i class="fas fa-lightbulb"></i>
+
+            Tips for Best Accuracy
+
+        </h2>
+
+        <ul class="tips-list">
+
+            <li>Use good lighting while taking the photo.</li>
+
+            <li>Keep the camera steady to avoid blur.</li>
+
+            <li>Capture only the affected skin region.</li>
+
+            <li>Avoid shadows and reflections.</li>
+
+            <li>Use high-resolution images whenever possible.</li>
+
+            <li>Ensure the lesion is clearly visible.</li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- AI Workflow -->
+
+    <section class="help-card">
+
+        <h2 data-lang="ai_workflow">
+
+            <i class="fas fa-brain"></i>
+
+            How AI Analysis Works
+
+        </h2>
+
+        <div class="workflow">
+
+            <div class="workflow-card">
+
+                <i class="fas fa-upload"></i>
+
+                <h3>Upload</h3>
+
+                <p>User uploads a skin image.</p>
+
+            </div>
+
+            <div class="workflow-card">
+
+                <i class="fas fa-crop"></i>
+
+                <h3>Preprocessing</h3>
+
+                <p>Image is resized and normalized.</p>
+
+            </div>
+
+            <div class="workflow-card">
+
+                <i class="fas fa-microchip"></i>
+
+                <h3>Deep Learning</h3>
+
+                <p>MobileNetV2 extracts image features.</p>
+
+            </div>
+
+            <div class="workflow-card">
+
+                <i class="fas fa-chart-line"></i>
+
+                <h3>Prediction</h3>
+
+                <p>AI predicts the most probable disease.</p>
+
+            </div>
+
+            <div class="workflow-card">
+
+                <i class="fas fa-file-medical"></i>
+
+                <h3>Report</h3>
+
+                <p>A complete medical-style report is generated.</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FAQ -->
+
+    <section class="help-card">
+
+        <h2>
+
+            <i class="fas fa-circle-question"></i>
+
+            Frequently Asked Questions
+
+        </h2>
+
+        <div class="faq">
+
+            <div class="faq-item">
+
+                <h3>
+
+                    Is DermaVision AI a medical diagnosis?
+
+                <h2 data-lang="medical_assistance">
+
+                    <i class="fas fa-user-doctor"></i>
+
+                    Need Medical Assistance?
+
+                </h2>
+                </p>
+
+            </div>
+
+            <div class="faq-item">
+
+                <h3>
+
+                    Which skin diseases are supported?
+
+                </h3>
+
+                <p>
+
+                    The system currently detects nine common skin conditions
+                    using a MobileNetV2 deep learning model.
+
+                </p>
+
+            </div>
+
+            <div class="faq-item">
+
+                <h3>
+
+                    Can I download my report?
+
+                </h3>
+
+                <p>
+
+                    Yes. Reports can be downloaded as PDF files from the History page.
+
+                </p>
+
+            </div>
+
+            <div class="faq-item">
+
+                <h3>
+
+                    Is my scan history saved?
+
+                </h3>
+
+                <p>
+
+                    Yes. Every scan is stored securely in the local SQLite database.
+
+                </p>
+
+            </div>
+
+            <div class="faq-item">
+
+                <h3>
+
+                    Can I compare previous scans?
+
+                </h3>
+
+                <p>
+
+                    Progress tracking is planned for a future version of DermaVision AI.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Medical Advice -->
+
+    <section class="medical-warning">
+
+        <i class="fas fa-user-doctor"></i>
+
+        <div>
+
+            <h2>
+
+                Need Medical Assistance?
+
+            </h2>
+
+            <p>
+
+                If your symptoms worsen, spread rapidly, bleed,
+                become painful, or persist for several weeks,
+                consult a qualified dermatologist immediately.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Contact -->
+
+    <section class="contact-card">
+
+        <h2 data-lang="project_information">
+
+            <i class="fas fa-headset"></i>
+
+            Project Information
+
+        </h2>
+
+        <div class="contact-grid">
+
+            <div>
+
+                <strong>Application</strong>
+
+                <p>DermaVision AI</p>
+
+            </div>
+
+            <div>
+
+                <strong>Version</strong>
+
+                <p>1.0</p>
+
+            </div>
+
+            <div>
+
+                <strong>AI Model</strong>
+
+                <p>MobileNetV2</p>
+
+            </div>
+
+            <div>
+
+                <strong>Database</strong>
+
+                <p>SQLite</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

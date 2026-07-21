@@ -1,0 +1,479 @@
+/* ==========================================================
+   HELP PAGE
+========================================================== */
+
+.help-page{
+
+    width:min(1200px,92%);
+    margin:40px auto 80px;
+
+}
+
+
+/* ==========================================================
+   HERO
+========================================================== */
+
+.help-hero{
+
+    text-align:center;
+
+    padding:70px 40px;
+
+    border-radius:30px;
+
+    background:linear-gradient(135deg,#1976d2,#42a5f5);
+
+    color:white;
+
+    margin-bottom:40px;
+
+    box-shadow:0 20px 40px rgba(25,118,210,.15);
+
+}
+
+.hero-badge{
+
+    display:inline-block;
+
+    padding:8px 18px;
+
+    background:rgba(255,255,255,.2);
+
+    border-radius:50px;
+
+    margin-bottom:20px;
+
+    font-weight:600;
+
+}
+
+.help-hero h1{
+
+    font-size:3rem;
+
+    margin-bottom:20px;
+
+}
+
+.help-hero p{
+
+    max-width:850px;
+
+    margin:auto;
+
+    font-size:1.1rem;
+
+    line-height:1.8;
+
+}
+
+
+/* ==========================================================
+   COMMON CARD
+========================================================== */
+
+.help-card{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:22px;
+
+    margin-bottom:35px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.06);
+
+}
+
+.help-card h2{
+
+    color:var(--text);
+
+    margin-bottom:25px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    font-size:1.7rem;
+
+}
+
+.help-card h2 i{
+
+    color:#1976d2;
+
+}
+
+
+/* ==========================================================
+   GETTING STARTED
+========================================================== */
+
+.steps{
+
+    display:grid;
+
+    gap:18px;
+
+}
+
+.step{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:18px;
+
+    border-radius:15px;
+
+    background:#f7fbff;
+
+    transition:.3s;
+
+}
+
+.step:hover{
+
+    transform:translateX(8px);
+
+    background:#eef7ff;
+
+}
+
+.step span{
+
+    width:42px;
+
+    height:42px;
+
+    background:#1976d2;
+
+    color:white;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:bold;
+
+}
+
+
+/* ==========================================================
+   IMAGE FORMATS
+========================================================== */
+
+.format-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+
+    gap:20px;
+
+}
+
+.format-card{
+
+    padding:30px;
+
+    text-align:center;
+
+    background:var(--surface-2);
+
+    border-radius:18px;
+
+    font-size:1.3rem;
+
+    font-weight:600;
+
+    color:#1976d2;
+
+    transition:.3s;
+
+}
+
+.format-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 10px 25px rgba(25,118,210,.15);
+
+}
+
+
+/* ==========================================================
+   TIPS
+========================================================== */
+
+.tips-list{
+
+    padding-left:25px;
+
+}
+
+.tips-list li{
+
+    margin-bottom:15px;
+
+    line-height:1.7;
+
+}
+
+
+/* ==========================================================
+   WORKFLOW
+========================================================== */
+
+.workflow{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+
+    gap:20px;
+
+}
+
+.workflow-card{
+
+    padding:25px;
+
+    text-align:center;
+
+    border-radius:18px;
+
+    background:#f9fbfd;
+
+    transition:.3s;
+
+}
+
+.workflow-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.workflow-card i{
+
+    font-size:2.6rem;
+
+    color:#1976d2;
+
+    margin-bottom:18px;
+
+}
+
+.workflow-card h3{
+
+    margin-bottom:12px;
+    color:var(--text);
+
+}
+
+
+/* ==========================================================
+   FAQ
+========================================================== */
+
+.faq{
+
+    display:grid;
+
+    gap:20px;
+
+}
+
+.faq-item{
+
+    padding:25px;
+
+    border-left:5px solid #1976d2;
+
+    background:#fafcff;
+
+    border-radius:12px;
+
+}
+
+.faq-item h3{
+
+    margin-bottom:10px;
+
+    color:var(--text);
+
+}
+
+.faq-item p{
+
+    line-height:1.8;
+
+    color:#555;
+
+}
+
+
+/* ==========================================================
+   MEDICAL WARNING
+========================================================== */
+
+.medical-warning{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:30px;
+
+    background:#fff8e8;
+
+    border-left:8px solid #f59e0b;
+
+    padding:35px;
+
+    border-radius:20px;
+
+    margin-bottom:35px;
+
+}
+
+.medical-warning i{
+
+    font-size:3rem;
+
+    color:#f59e0b;
+
+}
+
+.medical-warning h2{
+
+    margin-bottom:10px;
+
+    color:var(--text);
+
+}
+
+.medical-warning p{
+
+    line-height:1.8;
+
+}
+
+
+/* ==========================================================
+   CONTACT
+========================================================== */
+
+.contact-card{
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:35px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.06);
+
+}
+
+.contact-card h2{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:var(--text);
+
+    margin-bottom:30px;
+
+}
+
+.contact-card h2 i{
+
+    color:#1976d2;
+
+}
+
+.contact-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:25px;
+
+}
+
+.contact-grid div{
+
+    padding:22px;
+
+    background:var(--surface-2);
+
+    border-radius:15px;
+
+    text-align:center;
+
+}
+
+.contact-grid strong{
+
+    color:#1976d2;
+
+    display:block;
+
+    margin-bottom:10px;
+
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media(max-width:768px){
+
+.help-hero{
+
+padding:50px 25px;
+
+}
+
+.help-hero h1{
+
+font-size:2.2rem;
+
+}
+
+.help-card{
+
+padding:25px;
+
+}
+
+.medical-warning{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+}

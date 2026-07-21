@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block title %}Scan History | DermaVision AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/history.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="history-page">
+
+    <!-- Hero -->
+
+    <section class="history-hero">
+
+        <span class="history-badge">
+            AI Scan History
+        </span>
+
+        <h1 data-lang="previous_skin_reports">Previous Skin Analysis Reports</h1>
+
+        <p data-lang="view_your_history">
+
+            View your previous AI skin disease analyses,
+            confidence scores and scan history.
+
+        </p>
+
+    </section>
+
+    <!-- Statistics -->
+
+    <section class="history-stats">
+
+        <div class="history-stat-card">
+
+            <i class="fas fa-images"></i>
+
+            <div>
+
+                <h2>{{ total_scans }}</h2>
+
+                <p>Total Scans</p>
+
+            </div>
+
+        </div>
+
+        <div class="history-stat-card">
+
+            <i class="fas fa-history"></i>
+
+            <div>
+
+                <h2>{{ scans|length }}</h2>
+
+                <p>Stored Reports</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Search -->
+
+    <section class="search-section">
+
+        <div class="search-box">
+
+            <i class="fas fa-search"></i>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by disease..."
+                data-lang-placeholder="search_by_disease">
+
+        </div>
+
+    </section>
+
+    <!-- Table -->
+
+    <section class="history-table-card">
+
+        <table id="historyTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Image</th>
+
+                    <th>Disease</th>
+
+                    <th>Confidence</th>
+
+                    <th>Date</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+{% if scans %}
+
+    {% for scan in scans %}
+
+    <tr>
+
+        <td>
+
+            <img
+            src="{{ url_for('static', filename=scan['image']) }}"
+            class="history-image">
+
+        </td>
+
+        <td class="disease-name">
+
+            {{ scan["disease"] }}
+
+        </td>
+
+        <td>
+
+            <span class="confidence-badge">
+
+                {{ scan["confidence"] }}%
+
+            </span>
+
+        </td>
+
+        <td>
+
+            {{ scan["scan_date"] }}
+
+        </td>
+
+        <td>
+
+            <div class="history-actions">
+
+                <a
+                href="{{ url_for('report', scan_id=scan['id']) }}"
+                class="view-btn">
+
+                    <i class="fas fa-eye"></i>
+
+                    View
+
+                </a>
+
+                <a
+                href="{{ url_for('download_pdf', scan_id=scan['id']) }}"
+                class="pdf-btn">
+
+                    <i class="fas fa-file-pdf"></i>
+
+                    PDF
+
+                </a>
+
+                <a
+                href="{{ url_for('delete_scan', scan_id=scan['id']) }}"
+                class="delete-btn"
+                onclick="return confirm('Delete this scan?')">
+
+                    <i class="fas fa-trash"></i>
+
+                    Delete
+
+                </a>
+
+            </div>
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+{% else %}
+
+<tr>
+
+<td colspan="5">
+
+<div class="empty-history">
+
+<i class="fas fa-folder-open"></i>
+
+<h2>No Scan History Yet</h2>
+
+<p>
+
+You haven't analyzed any skin images yet.
+
+Start your first AI scan to generate reports.
+
+</p>
+
+<a href="{{ url_for('home') }}" class="primary-btn">
+
+<i class="fas fa-camera"></i>
+
+Start First Scan
+
+</a>
+
+</div>
+
+</td>
+
+</tr>
+
+{% endif %}
+
+</tbody>
+
+        </table>
+
+    </section>
+
+</div>
+
+<script>
+
+const searchInput=document.getElementById("searchInput");
+
+searchInput.addEventListener("keyup",function(){
+
+let filter=this.value.toLowerCase();
+
+let rows=document.querySelectorAll("#historyTable tbody tr");
+
+rows.forEach(function(row){
+
+let disease=row.querySelector(".disease-name").innerText.toLowerCase();
+
+row.style.display=disease.includes(filter)?"":"none";
+
+});
+
+});
+
+</script>
+
+{% endblock %}

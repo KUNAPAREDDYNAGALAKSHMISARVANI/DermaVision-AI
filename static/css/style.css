@@ -1,0 +1,799 @@
+/* ==========================================================
+   DermaVision AI
+   Global Styles
+========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ==========================
+   LIGHT THEME
+========================== */
+
+:root{
+
+    --bg:#f4f8fc;
+    --surface:#ffffff;
+    --surface-2:#f8fafc;
+
+    --text:#1e293b;
+    --text-light:#64748b;
+
+    --primary:#2563eb;
+    --border:#dbe4ee;
+
+    --shadow:0 12px 30px rgba(0,0,0,.08);
+    --primary-dark:#1d4ed8;
+    --secondary:#0f172a;
+
+    --white:#ffffff;
+
+    --success:#22c55e;
+    --danger:#ef4444;
+    --warning:#f59e0b;
+
+    --radius:20px;
+
+}
+
+/* ==========================
+   DARK THEME
+========================== */
+
+.dark-mode,
+body.dark-mode,
+html.dark-mode{
+
+    --bg:#0f172a;
+
+    --surface:#162033;
+
+    --surface-2:#1d2940;
+
+    --text:#f8fafc;
+
+    --text-light:#cbd5e1;
+
+    --border:#334155;
+
+    --shadow:0 12px 30px rgba(0,0,0,.45);
+
+
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    background:var(--bg);
+    color:var(--text);
+
+}
+
+img{
+    max-width:100%;
+    display:block;
+}
+
+a{
+    text-decoration:none;
+}
+
+button,
+input{
+
+    font-family:inherit;
+
+}
+
+/* ==========================================================
+   NAVBAR
+========================================================== */
+
+.main-navbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    background:var(--surface);
+
+    box-shadow:0 2px 15px rgba(0,0,0,.05);
+
+}
+
+.nav-container{
+
+    max-width:1400px;
+
+    margin:auto;
+
+    padding:16px 40px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    color:inherit;
+
+}
+
+.logo-icon{
+
+    width:54px;
+
+    height:54px;
+
+    border-radius:16px;
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:22px;
+
+}
+.logo-title{
+
+    color:var(--text);
+
+}
+
+.logo-subtitle{
+
+    color:var(--text-light);
+
+}
+.desktop-nav{
+
+    display:flex;
+
+    gap:30px;
+
+}
+
+.desktop-nav a{
+
+    color:var(--text);
+
+}
+
+.desktop-nav a:hover{
+
+    color:#2563eb;
+
+}
+
+.mobile-menu-btn{
+
+    display:none;
+
+    background:none;
+
+    border:none;
+
+    font-size:24px;
+
+    cursor:pointer;
+
+}
+
+.mobile-menu{
+
+    display:none;
+
+}
+
+/* ==========================================================
+   MAIN
+========================================================== */
+
+main{
+
+    min-height:75vh;
+
+}
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+
+.primary-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:15px 30px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.primary-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 15px 35px rgba(37,99,235,.25);
+
+}
+
+.secondary-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    padding:15px 30px;
+
+    border-radius:14px;
+
+    border:2px solid var(--primary);
+
+    color:var(--primary);
+
+    background:#fff;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.secondary-btn:hover{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}
+
+/* ==========================================================
+   CARDS
+========================================================== */
+
+.glass-card{
+
+    background:var(--surface);
+
+    border-radius:var(--radius);
+
+    padding:30px;
+
+    box-shadow:var(--shadow);
+
+    border:1px solid var(--border);
+}
+
+/* ==========================================================
+   SECTION TITLES
+========================================================== */
+
+.section-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    margin-bottom:22px;
+
+}
+
+.section-title i{
+
+    color:var(--primary);
+
+    font-size:22px;
+
+}
+
+.section-title h2{
+
+    color:var(--text);
+
+}
+
+/* ==========================================================
+   FLASH
+========================================================== */
+
+.flash-wrapper{
+
+    width:min(1000px,92%);
+
+    margin:30px auto;
+
+}
+
+.flash-message{
+
+    padding:16px 20px;
+
+    border-radius:14px;
+
+    display:flex;
+
+    gap:12px;
+
+    align-items:center;
+
+    font-weight:600;
+
+}
+
+.flash-message.success{
+
+    background:#dcfce7;
+
+    color:#166534;
+
+}
+
+.flash-message.error{
+
+    background:#fee2e2;
+
+    color:#991b1b;
+
+}
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.footer{
+
+    background:#0f172a;
+
+    color:#cbd5e1;
+
+    margin-top:80px;
+
+}
+
+.footer-container{
+
+    max-width:1400px;
+
+    margin:auto;
+
+    padding:70px 40px;
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+    gap:50px;
+
+}
+
+.footer h2,
+.footer h3{
+
+    color:#fff;
+
+    margin-bottom:20px;
+
+}
+
+.footer ul{
+
+    list-style:none;
+
+}
+
+.footer li{
+
+    margin-bottom:12px;
+
+}
+
+.footer a{
+
+    color:#cbd5e1;
+
+}
+
+.footer a:hover{
+
+    color:#fff;
+
+}
+
+.footer-bottom{
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    text-align:center;
+
+    padding:25px;
+
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media(max-width:992px){
+
+    .desktop-nav{
+
+        display:none;
+
+    }
+
+    .mobile-menu-btn{
+
+        display:block;
+
+    }
+
+    .mobile-menu{
+
+        display:none;
+
+        background:var(--surface);
+
+        border-top:1px solid var(--border);
+
+        padding:20px;
+
+    }
+
+    .mobile-menu.show{
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:16px;
+
+    }
+
+    .mobile-menu a{
+
+    color:var(--text);
+
+}
+    .nav-container{
+
+        padding:18px 20px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .logo-title{
+
+        font-size:20px;
+
+    }
+
+    .logo-subtitle{
+
+        font-size:12px;
+
+    }
+
+    .glass-card{
+
+        padding:22px;
+
+    }
+
+    .section-title h2{
+
+        font-size:22px;
+
+    }
+
+    .footer-container{
+
+        padding:50px 20px;
+
+    }
+
+}
+/* ==========================================
+   GLOBAL DARK MODE
+========================================== */
+
+.dark-mode{
+
+    background:#0f172a;
+
+    color:#f1f5f9;
+
+}
+
+.dark-mode body{
+
+    background:#0f172a;
+
+    color:#f1f5f9;
+
+    transition:.35s;
+
+}
+
+/* Cards */
+
+.dark-mode .glass-card,
+.dark-mode .stat-card,
+.dark-mode .chart-card,
+.dark-mode .action-card,
+.dark-mode .summary-card,
+.dark-mode .scanner-container,
+.dark-mode .mission-card,
+.dark-mode .feature-card,
+.dark-mode .tech-card,
+.dark-mode .disease-card,
+.dark-mode .faq-card,
+.dark-mode .contact-card,
+.dark-mode .setting-card,
+.dark-mode .help-card,
+.dark-mode .history-stat-card,
+.dark-mode .search-box,
+.dark-mode .compare-card,
+.dark-mode .history-table-card,
+.dark-mode .upload-card,
+.dark-mode .upload-dropzone,
+.dark-mode .future-section,
+.dark-mode .disclaimer-box,
+.dark-mode .medical-warning,
+.dark-mode .info-box,
+.dark-mode .system-grid div,
+.dark-mode .workflow-card,
+.dark-mode .feature,
+.dark-mode .faq-item,
+.dark-mode .empty-history{
+
+    background:#1e293b !important;
+
+    color:#f8fafc !important;
+
+    border:1px solid #334155;
+
+}
+
+/* Sections */
+
+.dark-mode section{
+
+    color:#f8fafc;
+
+}
+
+/* Text */
+
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6{
+
+    color:#f8fafc !important;
+
+}
+
+.dark-mode p,
+.dark-mode span,
+.dark-mode li,
+.dark-mode label,
+.dark-mode small{
+
+    color:#cbd5e1 !important;
+
+}
+
+/* Inputs */
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select{
+
+    background:#0f172a;
+
+    color:white;
+
+    border:1px solid #475569;
+
+}
+
+/* Tables */
+
+.dark-mode table{
+
+    background:#1e293b;
+
+    color:white;
+
+}
+
+.dark-mode th{
+
+    background:#0f172a;
+
+}
+
+.dark-mode td{
+
+    border-color:#334155;
+
+}
+
+/* Navbar */
+
+.dark-mode .main-navbar{
+
+    background:var(--surface);
+
+}
+
+/* Footer */
+
+.dark-mode footer{
+
+    background:#0b1220;
+
+}
+
+/* Buttons */
+
+.dark-mode .primary-btn{
+
+    background:#2563eb;
+
+}
+
+.dark-mode .secondary-btn{
+
+    background:#334155;
+
+    color:white;
+
+}
+
+/* Global dark mode fallback for page-specific surfaces */
+.dark-mode .hero-badge,
+.dark-mode .dashboard-badge,
+.dark-mode .progress-badge,
+.dark-mode .history-badge,
+.dark-mode .about-hero,
+.dark-mode .help-hero,
+.dark-mode .settings-hero,
+.dark-mode .dashboard-hero,
+.dark-mode .health-tip,
+.dark-mode .future-section,
+.dark-mode .disclaimer-box,
+.dark-mode .medical-warning,
+.dark-mode .contact-card,
+.dark-mode .help-card,
+.dark-mode .settings-card,
+.dark-mode .search-box,
+.dark-mode .history-table-card,
+.dark-mode .summary-card,
+.dark-mode .compare-card,
+.dark-mode .upload-card,
+.dark-mode .upload-dropzone,
+.dark-mode .progress-page,
+.dark-mode .result-page,
+.dark-mode .about-page,
+.dark-mode .settings-page,
+.dark-mode .history-page,
+.dark-mode .dashboard-page,
+.dark-mode .feature-card,
+.dark-mode .tech-card,
+.dark-mode .disease-card,
+.dark-mode .developer-card,
+.dark-mode .workflow-card,
+.dark-mode .faq-item,
+.dark-mode .step,
+.dark-mode .compare-card,
+.dark-mode .table-wrapper,
+.dark-mode .feature {
+
+    background:var(--surface) !important;
+    color:var(--text) !important;
+    border-color:var(--border) !important;
+
+}
+
+.dark-mode .hero-badge,
+.dark-mode .dashboard-badge,
+.dark-mode .progress-badge,
+.dark-mode .history-badge,
+.dark-mode .step span,
+.dark-mode .feature-icon,
+.dark-mode .status-icon {
+
+    background:rgba(255,255,255,.08) !important;
+
+}
+
+.dark-mode .ai-scanner-overlay {
+
+    background:rgba(15,23,42,.95) !important;
+
+}
+
+.dark-mode .scanner-container {
+
+    background:var(--surface) !important;
+    box-shadow:0 30px 60px rgba(0,0,0,.45) !important;
+
+}
+
+.dark-mode tbody tr:hover {
+
+    background:var(--surface-2) !important;
+
+}
+
+.dark-mode .table-wrapper,
+.dark-mode .search-box,
+.dark-mode .upload-dropzone,
+.dark-mode .faq-item,
+.dark-mode .history-hero,
+.dark-mode .help-card,
+.dark-mode .history-stat-card,
+.dark-mode .summary-card,
+.dark-mode .compare-card {
+
+    box-shadow:0 14px 35px rgba(0,0,0,.18) !important;
+
+}

@@ -1,0 +1,501 @@
+/* ==========================================================
+   DermaVision AI
+   History Page
+========================================================== */
+
+.history-page{
+
+    width:100%;
+    max-width:1400px;
+
+    margin:auto;
+
+    padding:40px 5% 70px;
+
+}
+
+/* ==========================================================
+   Hero
+========================================================== */
+
+.history-hero{
+
+    text-align:center;
+
+    padding:60px 20px;
+
+    border-radius:28px;
+
+    color:white;
+
+    background:
+    linear-gradient(
+        135deg,
+        #1565c0,
+        #42a5f5
+    );
+
+    box-shadow:
+    0 20px 50px rgba(21,101,192,.18);
+
+}
+
+.history-badge{
+
+    display:inline-block;
+
+    padding:10px 18px;
+
+    border-radius:30px;
+
+    margin-bottom:20px;
+
+    font-weight:600;
+
+    background:rgba(255,255,255,.2);
+
+    backdrop-filter:blur(10px);
+
+}
+
+.history-hero h1{
+
+    font-size:3rem;
+
+    margin-bottom:15px;
+
+}
+
+.history-hero p{
+
+    font-size:1.05rem;
+
+    opacity:.95;
+
+    max-width:700px;
+
+    margin:auto;
+
+}
+
+/* ==========================================================
+   Statistics
+========================================================== */
+
+.history-stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+    gap:25px;
+
+    margin:45px 0;
+
+}
+
+.history-stat-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:28px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.history-stat-card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.history-stat-card i{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:1.8rem;
+
+    color:white;
+
+    background:linear-gradient(135deg,#1976d2,#42a5f5);
+
+}
+
+.history-stat-card h2{
+
+    font-size:2rem;
+
+    color:#16324f;
+
+}
+
+.history-stat-card p{
+
+    color:#6b7280;
+
+}
+
+/* ==========================================================
+   Search
+========================================================== */
+
+.search-section{
+
+    margin-bottom:35px;
+
+}
+
+.search-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    background:white;
+
+    border-radius:16px;
+
+    padding:18px 22px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.search-box i{
+
+    color:#1976d2;
+
+    font-size:1.2rem;
+
+}
+
+.search-box input{
+
+    width:100%;
+
+    border:none;
+
+    outline:none;
+
+    font-size:1rem;
+
+    background:transparent;
+
+}
+
+/* ==========================================================
+   Table
+========================================================== */
+
+.history-table-card{
+
+    background:white;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+thead{
+
+    background:#1565c0;
+
+    color:white;
+
+}
+
+th{
+
+    padding:18px;
+
+    text-align:left;
+
+    font-weight:600;
+
+}
+
+td{
+
+    padding:18px;
+
+    border-bottom:1px solid #edf2f7;
+
+    vertical-align:middle;
+
+}
+
+tbody tr{
+
+    transition:.3s;
+
+}
+
+tbody tr:hover{
+
+    background:#f5faff;
+
+}
+
+.history-image{
+
+    width:75px;
+
+    height:75px;
+
+    border-radius:14px;
+
+    object-fit:cover;
+
+    border:3px solid #e3f2fd;
+
+}
+
+.disease-name{
+
+    font-weight:600;
+
+    color:#16324f;
+
+}
+
+.confidence-badge{
+
+    display:inline-block;
+
+    padding:8px 15px;
+
+    border-radius:30px;
+
+    font-weight:600;
+
+    color:white;
+
+    background:linear-gradient(135deg,#43a047,#66bb6a);
+
+}
+
+/* ==========================================================
+   Empty Table
+========================================================== */
+
+tbody tr td[colspan]{
+
+    text-align:center;
+
+    padding:50px;
+
+    color:#888;
+
+    font-size:1.05rem;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media(max-width:900px){
+
+.history-hero h1{
+
+font-size:2.2rem;
+
+}
+
+table{
+
+display:block;
+
+overflow-x:auto;
+
+white-space:nowrap;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.history-page{
+
+padding:25px;
+
+}
+
+.history-stat-card{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+.search-box{
+
+padding:14px;
+
+}
+
+.history-image{
+
+width:60px;
+
+height:60px;
+
+}
+
+}
+.history-actions{
+
+display:flex;
+
+gap:10px;
+
+flex-wrap:wrap;
+
+}
+
+.view-btn,
+.pdf-btn,
+.delete-btn{
+
+padding:9px 14px;
+
+border:none;
+
+border-radius:10px;
+
+font-size:.9rem;
+
+font-weight:600;
+
+cursor:pointer;
+
+text-decoration:none;
+
+transition:.3s;
+
+display:flex;
+
+align-items:center;
+
+gap:6px;
+
+}
+
+.view-btn{
+
+background:#1976d2;
+
+color:white;
+
+}
+
+.view-btn:hover{
+
+background:#0d47a1;
+
+}
+
+.pdf-btn{
+
+background:#43a047;
+
+color:white;
+
+}
+
+.pdf-btn:hover{
+
+background:#2e7d32;
+
+}
+
+.delete-btn{
+
+background:#ef5350;
+
+color:white;
+
+}
+
+.delete-btn:hover{
+
+background:#c62828;
+
+}
+/* ===========================
+   Empty History
+=========================== */
+
+.empty-history{
+
+    text-align:center;
+
+    padding:70px 20px;
+
+}
+
+.empty-history i{
+
+    font-size:80px;
+
+    color:#1976d2;
+
+    margin-bottom:20px;
+
+}
+
+.empty-history h2{
+
+    color:#16324f;
+
+    margin-bottom:15px;
+
+}
+
+.empty-history p{
+
+    color:#666;
+
+    max-width:500px;
+
+    margin:0 auto 30px;
+
+    line-height:1.7;
+
+}

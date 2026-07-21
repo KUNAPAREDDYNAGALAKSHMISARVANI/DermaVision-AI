@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+dataset/
+
+static/uploads/
+static/reports/
+
+database/*.db
+
+.idea/
+.vscode/
+
+.DS_Store
+Thumbs.db

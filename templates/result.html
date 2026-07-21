@@ -1,0 +1,632 @@
+{% extends "base.html" %}
+
+{% block title %}AI Scan Report | DermaVision AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="result-page">
+
+    <!-- ========================= -->
+    <!-- Hero Section -->
+    <!-- ========================= -->
+
+    <section class="report-hero">
+
+        <div class="hero-left">
+
+            <span class="badge">
+                AI Dermatology Report
+            </span>
+
+            <h1 data-lang="report_title">
+                Skin Analysis Complete
+            </h1>
+
+            <p class="hero-description" data-lang="report_description">
+                Your uploaded skin image has been analyzed using our
+                AI-powered dermatology model. Review the predicted
+                condition, confidence score, medical information,
+                and general care recommendations below.
+            </p>
+
+        </div>
+
+        <div class="hero-right">
+
+            <div class="status-card">
+
+                <div class="status-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+
+                <div>
+
+                    <h3 data-lang="analysis_successful">Analysis Successful</h3>
+
+                    <p data-lang="ai_scan_completed">
+                        AI scan completed successfully.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- Summary Section -->
+    <!-- ========================= -->
+
+    <section class="summary-grid">
+
+        <!-- Uploaded Image -->
+
+        <div class="glass-card image-card">
+
+            <div class="card-header">
+
+                <h2 data-lang="uploaded_image">Uploaded Image</h2>
+
+            </div>
+
+            <div class="image-container">
+
+                <img
+                    src="{{ image_url }}"
+                    alt="Uploaded Skin Image"
+                    class="uploaded-image"
+                    loading="lazy">
+
+            </div>
+
+            <div class="image-footer">
+
+                <i class="fas fa-image"></i>
+
+                Original uploaded image
+
+            </div>
+
+        </div>
+
+        <!-- Prediction Card -->
+
+        <div class="glass-card prediction-card">
+
+            <div class="card-header">
+
+                <h2 data-lang="ai_prediction">AI Prediction</h2>
+
+            </div>
+
+            <div class="prediction-main">
+
+                <h1 class="prediction-name">
+
+                    {{ disease }}
+
+                </h1>
+
+                <div class="confidence-wrapper">
+
+                    <div class="confidence-circle">
+
+                        <span>
+
+                            {{ confidence }}%
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <p class="confidence-label" data-lang="model_confidence">
+
+                    Model Confidence
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- Disease Overview -->
+    <!-- ========================= -->
+
+    <section class="glass-card">
+
+        <div class="section-title">
+
+            <i class="fas fa-book-medical"></i>
+
+            <h2 data-lang="disease_overview">Disease Overview</h2>
+
+        </div>
+
+        <p>
+
+            {{ disease_info.description }}
+
+        </p>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- Symptoms -->
+    <!-- ========================= -->
+
+    <section class="glass-card">
+
+        <div class="section-title">
+
+            <i class="fas fa-notes-medical"></i>
+
+            <h2 data-lang="symptoms">Symptoms</h2>
+
+        </div>
+
+        <ul class="medical-list">
+
+            {% for symptom in disease_info.symptoms %}
+
+            <li>
+
+                <i class="fas fa-check"></i>
+
+                {{ symptom }}
+
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- Causes -->
+    <!-- ========================= -->
+
+    <section class="glass-card">
+
+        <div class="section-title">
+
+            <i class="fas fa-dna"></i>
+
+            <h2 data-lang="causes">Causes & Risk Factors</h2>
+
+        </div>
+
+        <ul class="medical-list">
+
+            {% for cause in disease_info.causes %}
+
+            <li>
+
+                <i class="fas fa-angle-right"></i>
+
+                {{ cause }}
+
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </section>
+    <!-- ========================= -->
+    <!-- General Care Recommendations -->
+    <!-- ========================= -->
+
+    <section class="glass-card">
+
+        <div class="section-title">
+
+            <i class="fas fa-hand-holding-medical"></i>
+
+            <h2>
+
+                General Care Recommendations
+
+            </h2>
+
+        </div>
+
+        <div class="recommendation-grid">
+
+            {% for precaution in disease_info.precautions %}
+
+            <div class="recommendation-card">
+
+                <div class="recommendation-icon">
+
+                    <i class="fas fa-check-circle"></i>
+
+                </div>
+
+                <div>
+
+                    <h4 data-lang="recommendation">Recommendation</h4>
+
+                    <p>{{ precaution }}</p>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- When To Consult -->
+    <!-- ========================= -->
+
+    <section class="glass-card emergency-card">
+
+        <div class="section-title">
+
+            <i class="fas fa-user-md"></i>
+
+            <h2 data-lang="when_to_consult">When to Consult a Dermatologist</h2>
+
+        </div>
+
+        <div class="consult-grid">
+
+            <div class="consult-item">
+
+                <i class="fas fa-calendar-check"></i>
+
+                <span>
+                    Symptoms persist for several weeks.
+                </span>
+
+            </div>
+
+            <div class="consult-item">
+
+                <i class="fas fa-exclamation-circle"></i>
+
+                <span>
+                    Rapid increase in size or spread.
+                </span>
+
+            </div>
+
+            <div class="consult-item">
+
+                <i class="fas fa-tint"></i>
+
+                <span>
+                    Bleeding, discharge or severe pain.
+                </span>
+
+            </div>
+
+            <div class="consult-item">
+
+                <i class="fas fa-fire"></i>
+
+                <span>
+                    Severe redness, swelling or infection.
+                </span>
+
+            </div>
+
+            <div class="consult-item">
+
+                <i class="fas fa-clock"></i>
+
+                <span>
+                    Recurring symptoms despite treatment.
+                </span>
+
+            </div>
+
+            <div class="consult-item">
+
+                <i class="fas fa-shield-virus"></i>
+
+                <span>
+                    If you have diabetes or a weakened immune system.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- Red Flag Symptoms -->
+    <!-- ========================= -->
+
+    <section class="glass-card warning-card">
+
+        <div class="section-title">
+
+            <i class="fas fa-triangle-exclamation"></i>
+
+            <h2 data-lang="red_flag_symptoms">Red Flag Symptoms</h2>
+
+        </div>
+
+        <div class="warning-list">
+
+            <div class="warning-item">
+
+                <i class="fas fa-circle"></i>
+
+                Sudden change in color, size or shape.
+
+            </div>
+
+            <div class="warning-item">
+
+                <i class="fas fa-circle"></i>
+
+                Persistent bleeding.
+
+            </div>
+
+            <div class="warning-item">
+
+                <i class="fas fa-circle"></i>
+
+                High fever with skin rash.
+
+            </div>
+
+            <div class="warning-item">
+
+                <i class="fas fa-circle"></i>
+
+                Severe pain or rapidly worsening lesion.
+
+            </div>
+
+            <div class="warning-item">
+
+                <i class="fas fa-circle"></i>
+
+                Difficulty breathing due to allergic skin reactions.
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- AI Confidence Explanation -->
+    <!-- ========================= -->
+
+    <section class="glass-card">
+
+        <div class="section-title">
+
+            <i class="fas fa-microchip"></i>
+
+            <h2 data-lang="ai_confidence_explanation">AI Confidence Explanation</h2>
+
+        </div>
+
+        <p data-lang="ai_confidence_text">
+
+            The confidence score indicates how certain the AI model is
+            about its prediction based on patterns learned during training.
+            A higher confidence generally means the uploaded image closely
+            matches examples seen by the model. However, confidence does
+            not guarantee a medical diagnosis and should always be
+            interpreted together with clinical evaluation by a qualified
+            dermatologist.
+
+        </p>
+
+    </section>
+        <!-- ========================= -->
+    <!-- AI Scan Summary -->
+    <!-- ========================= -->
+
+    <section class="summary-stats">
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+
+                <i class="fas fa-brain"></i>
+
+            </div>
+
+            <div>
+
+                <h4 data-lang="ai_model">AI Model</h4>
+
+                <p>MobileNetV2</p>
+
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+
+                <i class="fas fa-clock"></i>
+
+            </div>
+
+            <div>
+
+                <h4 data-lang="analysis_status">Analysis Status</h4>
+
+                <p data-lang="ai_scan_completed">Completed Successfully</p>
+
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+
+                <i class="fas fa-shield-heart"></i>
+
+            </div>
+
+            <div>
+
+                <h4 data-lang="prediction">Prediction</h4>
+
+                <p>{{ disease }}</p>
+
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+
+                <i class="fas fa-chart-line"></i>
+
+            </div>
+
+            <div>
+
+                <h4 data-lang="confidence">Confidence</h4>
+
+                <p>{{ confidence }}%</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- Medical Disclaimer -->
+    <!-- ========================= -->
+
+    <section class="glass-card disclaimer-card">
+
+        <div class="section-title">
+
+            <i class="fas fa-circle-info"></i>
+
+            <h2>
+
+                Medical Disclaimer
+
+            </h2>
+
+        </div>
+
+        <p data-lang="medical_disclaimer_text">
+
+            DermaVision AI is intended for educational and preliminary
+            screening purposes only. The prediction generated by the AI
+            model is not a confirmed medical diagnosis and should not be
+            used as a substitute for professional medical advice,
+            examination, diagnosis, or treatment.
+
+        </p>
+
+        <p>
+
+            Always consult a qualified dermatologist or healthcare
+            professional regarding any skin condition, especially if your
+            symptoms worsen, persist, or are accompanied by pain,
+            bleeding, infection, or other concerning changes.
+
+        </p>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- Report Actions -->
+    <!-- ========================= -->
+
+    <section class="action-section">
+
+        <a href="{{ url_for('home') }}" class="primary-btn" data-lang="scan_again">
+
+            <i class="fas fa-camera"></i>
+
+            Scan Again
+
+        </a>
+
+        <button class="secondary-btn" onclick="window.print()" data-lang="print_report">
+
+            <i class="fas fa-print"></i>
+
+            Print Report
+
+        </button>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- Footer -->
+    <!-- ========================= -->
+
+    <footer class="report-footer">
+
+        <div class="footer-content">
+
+            <div>
+
+                <h3>DermaVision AI</h3>
+
+                <p>
+                    AI-powered skin disease analysis platform.
+                </p>
+
+            </div>
+
+            <div>
+
+                <p>
+
+                    Report generated successfully.
+
+                </p>
+
+                <p>
+
+                    © 2026 DermaVision AI
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+
+{% endblock %}

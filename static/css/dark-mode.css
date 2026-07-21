@@ -1,0 +1,213 @@
+/* Global dark mode overrides loaded after all page CSS */
+
+.dark-mode,
+html.dark-mode,
+body.dark-mode {
+    --bg: #0f172a;
+    --surface: #162033;
+    --surface-2: #1d2940;
+    --text: #f8fafc;
+    --text-light: #cbd5e1;
+    --border: #334155;
+    --shadow: 0 12px 30px rgba(0, 0, 0, .45);
+}
+
+.dark-mode body,
+.dark-mode main,
+.dark-mode .about-page,
+.dark-mode .help-page,
+.dark-mode .history-page,
+.dark-mode .settings-page,
+.dark-mode .dashboard-page,
+.dark-mode .progress-page,
+.dark-mode .result-page {
+    background: var(--bg) !important;
+    color: var(--text) !important;
+}
+
+.dark-mode .main-navbar,
+.dark-mode .help-card,
+.dark-mode .settings-card,
+.dark-mode .about-hero,
+.dark-mode .upload-section form,
+.dark-mode .features li,
+.dark-mode .mission-card,
+.dark-mode .step,
+.dark-mode .format-card,
+.dark-mode .workflow-card,
+.dark-mode .faq-item,
+.dark-mode .medical-warning,
+.dark-mode .contact-card,
+.dark-mode .search-box,
+.dark-mode .history-table-card,
+.dark-mode .summary-card,
+.dark-mode .compare-card,
+.dark-mode .upload-card,
+.dark-mode .progress-card,
+.dark-mode .result-card,
+.dark-mode .dashboard-hero,
+.dark-mode .history-hero,
+.dark-mode .settings-hero,
+.dark-mode .help-hero,
+.dark-mode .health-tip,
+.dark-mode .feature-card,
+.dark-mode .tech-card,
+.dark-mode .disease-card,
+.dark-mode .developer-card,
+.dark-mode .history-stat-card,
+.dark-mode .action-card,
+.dark-mode .scanner-container,
+.dark-mode .ai-scanner-overlay {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.dark-mode .about-hero,
+.dark-mode .history-hero,
+.dark-mode .help-hero,
+.dark-mode .settings-hero,
+.dark-mode .dashboard-hero,
+.dark-mode .health-tip {
+    color: white !important;
+}
+
+.dark-mode .hero-badge,
+.dark-mode .dashboard-badge,
+.dark-mode .progress-badge,
+.dark-mode .history-badge,
+.dark-mode .step span,
+.dark-mode .feature-icon,
+.dark-mode .status-icon,
+.dark-mode .mission-card i,
+.dark-mode .contact-grid div,
+.dark-mode .info-box,
+.dark-mode .system-grid div {
+    background: rgba(255, 255, 255, .08) !important;
+    color: var(--text) !important;
+}
+
+.dark-mode .help-card h2,
+.dark-mode .settings-card h2,
+.dark-mode .about-hero h1,
+.dark-mode .dashboard-hero h1,
+.dark-mode .history-hero h1,
+.dark-mode .progress-hero h1,
+.dark-mode .result-page h1,
+.dark-mode .section-title h2,
+.dark-mode .feature-card h3,
+.dark-mode .tech-card span,
+.dark-mode .developer-card h2,
+.dark-mode .contact-card h2,
+.dark-mode .card-header h2,
+.dark-mode .quick-actions h3,
+.dark-mode .action-card h3 {
+    color: var(--text) !important;
+}
+
+.dark-mode a,
+.dark-mode button,
+.dark-mode .primary-btn,
+.dark-mode .secondary-btn,
+.dark-mode .view-btn,
+.dark-mode .pdf-btn,
+.dark-mode .delete-btn {
+    color: inherit !important;
+}
+
+.dark-mode .primary-btn {
+    background: #2563eb !important;
+}
+
+.dark-mode .secondary-btn {
+    background: #334155 !important;
+    color: white !important;
+}
+
+.dark-mode .scan-image,
+.dark-mode .upload-dropzone,
+.dark-mode .crop-modal,
+.dark-mode .crop-container,
+.dark-mode .compare-card,
+.dark-mode .history-table-card {
+    background: var(--surface-2) !important;
+}
+
+.dark-mode .upload-dropzone {
+    border-color: var(--border) !important;
+}
+
+.dark-mode .compare-card:hover,
+.dark-mode .help-card:hover,
+.dark-mode .workflow-card:hover,
+.dark-mode .upload-dropzone.dragging,
+.dark-mode .stat-card:hover,
+.dark-mode .chart-card:hover,
+.dark-mode .action-card:hover,
+.dark-mode .compare-card:hover {
+    background: var(--surface) !important;
+}
+
+.dark-mode table,
+.dark-mode thead,
+.dark-mode tbody tr,
+.dark-mode td,
+.dark-mode th {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.dark-mode thead {
+    background: var(--surface-2) !important;
+}
+
+.dark-mode tbody tr:hover {
+    background: var(--surface-2) !important;
+}
+
+.dark-mode .history-table-card {
+    box-shadow: 0 14px 35px rgba(0, 0, 0, .18) !important;
+}
+
+.dark-mode .ai-scanner-overlay {
+    background: rgba(15, 23, 42, .95) !important;
+}
+
+.dark-mode .scanner-container {
+    background: var(--surface) !important;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, .45) !important;
+}
+
+.dark-mode .help-hero,
+.dark-mode .history-hero,
+.dark-mode .settings-hero,
+.dark-mode .dashboard-hero,
+.dark-mode .health-tip {
+    box-shadow: 0 20px 45px rgba(0, 0, 0, .30) !important;
+}
+
+.dark-mode .empty-history i,
+.dark-mode .view-btn,
+.dark-mode .pdf-btn,
+.dark-mode .delete-btn {
+    color: white !important;
+}
+
+.dark-mode .view-btn,
+.dark-mode .pdf-btn,
+.dark-mode .delete-btn {
+    background: #2563eb !important;
+}
+
+.dark-mode .delete-btn {
+    background: #ef5350 !important;
+}
+
+.dark-mode .pdf-btn {
+    background: #43a047 !important;
+}
+
+.dark-mode .progress-fill {
+    background: linear-gradient(90deg, #1976d2, #42a5f5) !important;
+}

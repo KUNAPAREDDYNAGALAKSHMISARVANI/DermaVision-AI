@@ -1,0 +1,342 @@
+/* ==========================================================
+   DermaVision AI - about.css
+========================================================== */
+
+.about-page{
+    background:#f8fbff;
+    padding-bottom:60px;
+}
+
+/* Hero Section */
+
+.about-hero{
+    text-align:center;
+    padding:80px 8% 60px;
+    background:linear-gradient(135deg,#eef6ff,#ffffff);
+}
+
+.hero-badge{
+    display:inline-block;
+    background:#e8f4ff;
+    color:#1565c0;
+    padding:10px 18px;
+    border-radius:30px;
+    font-weight:600;
+    margin-bottom:18px;
+}
+
+.about-hero h1{
+    font-size:3rem;
+    color:#16324f;
+    margin-bottom:18px;
+}
+
+.about-hero p{
+    max-width:760px;
+    margin:auto;
+    color:#556677;
+    font-size:1.05rem;
+    line-height:1.8;
+}
+
+/* Mission & Vision */
+
+.mission-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:24px;
+    padding:50px 8%;
+}
+
+.mission-card{
+    background:#fff;
+    border-radius:22px;
+    padding:30px;
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+    text-align:center;
+}
+
+.mission-card i{
+    font-size:2.2rem;
+    color:#1976d2;
+    margin-bottom:16px;
+}
+
+.mission-card h2{
+    color:#16324f;
+    margin-bottom:12px;
+}
+
+.mission-card p{
+    color:#556677;
+    line-height:1.7;
+}
+
+/* Workflow */
+
+.workflow-section{
+    padding:50px 8%;
+    text-align:center;
+}
+
+.workflow-section h2{
+    font-size:2.2rem;
+    color:#16324f;
+    margin-bottom:35px;
+}
+
+.workflow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.step{
+    background:#fff;
+    border-radius:22px;
+    padding:25px;
+    width:230px;
+    box-shadow:0 10px 25px rgba(0,0,0,.06);
+}
+
+.step i{
+    font-size:2rem;
+    color:#1976d2;
+    margin-bottom:12px;
+}
+
+.step h3{
+    color:#16324f;
+    margin-bottom:8px;
+}
+
+.step p{
+    color:#667788;
+    line-height:1.6;
+}
+
+.arrow{
+    color:#1976d2;
+    font-size:1.5rem;
+}
+
+/* Technology Stack */
+
+.tech-section{
+    padding:50px 8%;
+    text-align:center;
+}
+
+.tech-section h2{
+    font-size:2.2rem;
+    color:#16324f;
+    margin-bottom:35px;
+}
+
+.tech-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:18px;
+}
+
+.tech-card{
+    background:#fff;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+    transition:transform .3s ease,box-shadow .3s ease;
+}
+
+.tech-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 14px 30px rgba(0,0,0,.08);
+}
+
+.tech-card i{
+    font-size:2rem;
+    color:#1976d2;
+    margin-bottom:10px;
+}
+
+.tech-card span{
+    display:block;
+    color:#16324f;
+    font-weight:600;
+}
+
+/* Diseases */
+
+.disease-section{
+    padding:50px 8%;
+    text-align:center;
+}
+
+.disease-section h2{
+    font-size:2.2rem;
+    color:#16324f;
+    margin-bottom:35px;
+}
+
+.disease-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+}
+
+.disease-card{
+    background:#fff;
+    border-radius:18px;
+    padding:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+    font-weight:600;
+    color:#16324f;
+}
+
+/* Features */
+
+.features-section{
+    padding:50px 8%;
+    text-align:center;
+}
+
+.features-section h2{
+    font-size:2.2rem;
+    color:#16324f;
+    margin-bottom:35px;
+}
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:18px;
+}
+
+.feature-card{
+    background:#fff;
+    border-radius:18px;
+    padding:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+    color:#16324f;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.feature-card i{
+    color:#1976d2;
+    font-size:1.1rem;
+}
+
+/* Developer */
+
+.developer-card{
+    background:#fff;
+    border-radius:22px;
+    padding:35px;
+    margin:50px 8%;
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+    text-align:center;
+}
+
+.developer-card h2{
+    color:#16324f;
+    margin-bottom:14px;
+}
+
+.developer-card h3{
+    color:#1976d2;
+    margin-bottom:10px;
+}
+
+.developer-card p{
+    color:#556677;
+    line-height:1.7;
+}
+
+/* Future Scope */
+
+.future-section{
+    background:#fff;
+    border-radius:22px;
+    padding:35px;
+    margin:50px 8%;
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+}
+
+.future-section h2{
+    color:#16324f;
+    margin-bottom:18px;
+}
+
+.future-section ul{
+    padding-left:20px;
+    color:#556677;
+    line-height:1.8;
+}
+
+.future-section li{
+    margin-bottom:8px;
+}
+
+/* Disclaimer */
+
+.disclaimer-box{
+    background:#eef6ff;
+    border-left:6px solid #1976d2;
+    border-radius:18px;
+    padding:30px;
+    margin:50px 8%;
+}
+
+.disclaimer-box h2{
+    color:#16324f;
+    margin-bottom:12px;
+}
+
+.disclaimer-box p{
+    color:#556677;
+    line-height:1.7;
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+    .about-hero h1{
+        font-size:2.4rem;
+    }
+
+    .workflow{
+        flex-direction:column;
+    }
+
+    .arrow{
+        transform:rotate(90deg);
+    }
+}
+
+@media(max-width:600px){
+    .about-hero{
+        padding:60px 20px 45px;
+    }
+
+    .mission-grid,
+    .workflow-section,
+    .tech-section,
+    .disease-section,
+    .features-section{
+        padding:40px 20px;
+    }
+
+    .future-section,
+    .disclaimer-box{
+        margin:40px 20px;
+        padding:25px;
+    }
+
+    .about-hero h1{
+        font-size:2rem;
+    }
+}

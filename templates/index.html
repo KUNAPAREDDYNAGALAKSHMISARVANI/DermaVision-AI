@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}
+DermaVision AI | Intelligent Skin Disease Detection
+{% endblock %}
+
+{% block content %}
+
+<!-- ========================================= -->
+<!-- Hero Section -->
+<!-- ========================================= -->
+
+<section class="hero-section">
+
+    <div class="hero-left">
+
+        <span class="hero-badge">
+
+            <i class="fas fa-shield-virus"></i>
+
+            AI Powered Dermatology
+
+        </span>
+
+        <h1 data-lang="hero_title">AI Skin Disease Detection</h1>
+
+        <p data-lang="hero_desc">Detect skin diseases instantly using Artificial Intelligence.</p>
+
+        <div class="hero-buttons">
+            <a href="#uploadSection" class="primary-btn" data-lang="scan">Start Scan</a>
+            <a href="{{ url_for('about') }}" class="secondary-btn" data-lang="learn_more">Learn More</a>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- Upload Section -->
+<!-- ========================================= -->
+
+<section id="uploadSection" class="upload-section">
+
+    <div class="upload-card">
+
+        <h2 data-lang="upload">Upload Skin Image</h2>
+
+        <p data-lang="supported_formats">Supported formats: JPG, JPEG, PNG</p>
+
+        <form action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data">
+
+            <input id="imageInput" type="file" name="image" accept="image/*" required hidden>
+
+            <div class="upload-dropzone" id="dropZone" onclick="document.getElementById('imageInput').click()">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h3 data-lang="drag_drop">Drag & Drop</h3>
+                <p data-lang="or_click_browse">or click to browse</p>
+            </div>
+
+            <div class="preview-wrapper">
+                <img id="previewImage" src="" alt="Preview" style="display:none;">
+            </div>
+
+            <div class="upload-actions">
+                <button type="button" id="chooseImage" class="secondary-btn" onclick="document.getElementById('imageInput').click()">Choose Image</button>
+                <button type="submit" class="primary-btn" data-lang="analyze_with_ai">
+                    <i class="fas fa-microchip"></i> Analyze with AI
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- Crop Modal -->
+<!-- ========================================= -->
+
+<div id="cropModal" class="crop-modal">
+    <div class="crop-container">
+        <div class="crop-header">
+            <h2>Crop Image</h2>
+            <button id="cancelCrop"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="crop-body">
+            <img id="cropImage" src="" alt="Crop Preview">
+        </div>
+        <div class="crop-toolbar">
+            <button type="button" id="rotateLeft"><i class="fas fa-undo"></i> Rotate Left</button>
+            <button type="button" id="rotateRight"><i class="fas fa-redo"></i> Rotate Right</button>
+            <button type="button" id="zoomIn"><i class="fas fa-search-plus"></i> Zoom In</button>
+            <button type="button" id="zoomOut"><i class="fas fa-search-minus"></i> Zoom Out</button>
+            <button type="button" id="flipHorizontal"><i class="fas fa-arrows-alt-h"></i> Flip</button>
+            <button type="button" id="resetCrop"><i class="fas fa-sync"></i> Reset</button>
+            <button type="button" id="cropButton" class="primary-btn"><i class="fas fa-crop-alt"></i> Apply Crop</button>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ========================================= -->
+<!-- Medical Disclaimer -->
+<!-- ========================================= -->
+
+<section class="disclaimer-box">
+    <div class="disclaimer-content">
+        <i class="fas fa-circle-info"></i>
+        <div>
+            <h3>Medical Disclaimer</h3>
+            <p>DermaVision AI is intended only for preliminary screening and educational purposes. It should not be considered a medical diagnosis. Always consult a qualified dermatologist for diagnosis and treatment.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
