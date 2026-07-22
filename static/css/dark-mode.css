@@ -211,3 +211,109 @@ body.dark-mode {
 .dark-mode .progress-fill {
     background: linear-gradient(90deg, #1976d2, #42a5f5) !important;
 }
+
+/* Progress Tracker Phase 1 Dark Mode Additions */
+.dark-mode .glass-card,
+.dark-mode .health-score-widget,
+.dark-mode .timeline-content,
+.dark-mode .compare-info,
+.dark-mode .select-group {
+    background: var(--surface-2) !important;
+    border-color: var(--border) !important;
+    color: var(--text) !important;
+}
+
+.dark-mode .scan-select {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.dark-mode .select-group label,
+.dark-mode .score-label,
+.dark-mode .timeline-header h4,
+.dark-mode .compare-info p {
+    color: var(--text) !important;
+}
+
+.dark-mode .disease-badge {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+}
+
+.dark-mode .baseline-tag {
+    background: rgba(245, 158, 11, 0.2) !important;
+    color: #fbbf24 !important;
+}
+
+.dark-mode .comparison-tag {
+    background: rgba(34, 197, 94, 0.2) !important;
+    color: #4ade80 !important;
+}
+
+.dark-mode .progress-bar {
+    background: var(--surface) !important;
+}
+
+.dark-mode .disease-filter-section {
+    background: var(--surface) !important;
+    border-color: var(--border) !important;
+}
+
+.dark-mode .disease-select {
+    background: var(--surface-2) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.dark-mode .filter-group label {
+    color: var(--text) !important;
+}
+
+/* Phase 3 Dashboard Analytics Dark Mode Additions */
+.dark-mode .metric-card,
+.dark-mode .action-tile,
+.dark-mode .chart-card,
+.dark-mode .risk-card,
+.dark-mode .table-card-wrapper,
+.dark-mode .empty-state-card {
+    background: var(--surface) !important;
+    border-color: var(--border) !important;
+    color: var(--text) !important;
+}
+
+.dark-mode .action-tile:hover {
+    border-color: #2563eb !important;
+}
+
+.dark-mode .metric-value,
+.dark-mode .action-tile h4,
+.dark-mode .chart-card-header h3,
+.dark-mode .risk-card h3,
+.dark-mode .recent-activity-table td,
+.dark-mode .empty-state-card h2 {
+    color: var(--text) !important;
+}
+
+.dark-mode .table-search-box input {
+    background: var(--surface-2) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.dark-mode .recent-activity-table th {
+    background: var(--surface-2) !important;
+    color: var(--text) !important;
+    border-bottom-color: var(--border) !important;
+}
+
+.dark-mode .chart-tag {
+    background: var(--surface-2) !important;
+    color: var(--text-light) !important;
+}
+
+.dark-mode .insights-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid var(--border) !important;
+}

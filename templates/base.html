@@ -78,6 +78,12 @@
           href="{{ url_for('static', filename='css/settings.css') }}">
     {% endif %}
 
+    {% if request.endpoint == 'progress' %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/progress.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% endif %}
+
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/dark-mode.css') }}">
 
@@ -119,41 +125,48 @@
 
         <nav class="desktop-nav">
 
-    <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('home') }}" data-lang="home">
+                Home
+            </a>
 
-    {% if session.get("user_id") %}
+            <a href="{{ url_for('dashboard') }}" data-lang="dashboard">
+                Dashboard
+            </a>
 
-        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('progress') }}" data-lang="progress_tracker">
+                Progress
+            </a>
 
-        <a href="{{ url_for('history') }}">History</a>
+            <a href="{{ url_for('history') }}" data-lang="history">
+                History
+            </a>
 
-        <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('about') }}" data-lang="about">
+                About
+            </a>
 
-        <a href="{{ url_for('help') }}">Help</a>
+            <a href="{{ url_for('help') }}" data-lang="help">
+                Help
+            </a>
 
-        <a href="{{ url_for('settings') }}">Settings</a>
+            <a href="{{ url_for('settings') }}" data-lang="settings">
+                Settings
+            </a>
 
-        <a href="{{ url_for('auth.logout') }}">
-            Logout
-        </a>
+            {% if session.get('user_id') %}
+            <a href="{{ url_for('auth.logout') }}" class="nav-auth-btn logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+            {% else %}
+            <a href="{{ url_for('auth.login') }}" class="nav-auth-btn login-btn">
+                <i class="fa-solid fa-right-to-bracket"></i> Login
+            </a>
+            <a href="{{ url_for('auth.register') }}" class="nav-auth-btn register-btn">
+                <i class="fa-solid fa-user-plus"></i> Register
+            </a>
+            {% endif %}
 
-    {% else %}
-
-        <a href="{{ url_for('about') }}">About</a>
-
-        <a href="{{ url_for('help') }}">Help</a>
-
-        <a href="{{ url_for('auth.login') }}">
-            Login
-        </a>
-
-        <a href="{{ url_for('auth.register') }}">
-            Register
-        </a>
-
-    {% endif %}
-
-  </nav>
+        </nav>
 
         <button class="mobile-menu-btn"
                 id="mobileMenuBtn">
@@ -165,59 +178,50 @@
     </div>
 
     <div class="mobile-menu"
-     id="mobileMenu">
+         id="mobileMenu">
 
-    <a href="{{ url_for('home') }}">
-        Home
-    </a>
+        <a href="{{ url_for('home') }}" data-lang="home">
+            Home
+        </a>
 
-    {% if session.get("user_id") %}
-
-        <a href="{{ url_for('dashboard') }}">
+        <a href="{{ url_for('dashboard') }}" data-lang="dashboard">
             Dashboard
         </a>
 
-        <a href="{{ url_for('history') }}">
+        <a href="{{ url_for('progress') }}" data-lang="progress_tracker">
+            Progress
+        </a>
+
+        <a href="{{ url_for('history') }}" data-lang="history">
             History
         </a>
 
-        <a href="{{ url_for('about') }}">
+        <a href="{{ url_for('about') }}" data-lang="about">
             About
         </a>
 
-        <a href="{{ url_for('help') }}">
+        <a href="{{ url_for('help') }}" data-lang="help">
             Help
         </a>
 
-        <a href="{{ url_for('settings') }}">
+        <a href="{{ url_for('settings') }}" data-lang="settings">
             Settings
         </a>
 
-        <a href="{{ url_for('auth.logout') }}">
-            Logout
+        {% if session.get('user_id') %}
+        <a href="{{ url_for('auth.logout') }}" class="nav-auth-btn logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
         </a>
-
-    {% else %}
-
-        <a href="{{ url_for('about') }}">
-            About
+        {% else %}
+        <a href="{{ url_for('auth.login') }}" class="nav-auth-btn login-btn">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
         </a>
-
-        <a href="{{ url_for('help') }}">
-            Help
+        <a href="{{ url_for('auth.register') }}" class="nav-auth-btn register-btn">
+            <i class="fa-solid fa-user-plus"></i> Register
         </a>
+        {% endif %}
 
-        <a href="{{ url_for('auth.login') }}">
-            Login
-        </a>
-
-        <a href="{{ url_for('auth.register') }}">
-            Register
-        </a>
-
-    {% endif %}
-
-</div>
+    </div>
 
 </header>
 
@@ -324,7 +328,8 @@
             </ul>
 
         </div>
-                <div class="footer-column">
+
+        <div class="footer-column">
 
             <h3>
 

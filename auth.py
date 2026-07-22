@@ -1,7 +1,7 @@
 import sqlite3
 from datetime import datetime
 
-from flask import (
+from flask import (  # type: ignore[import]
     Blueprint,
     render_template,
     request,
@@ -11,7 +11,7 @@ from flask import (
     flash
 )
 
-from werkzeug.security import (
+from werkzeug.security import (  # type: ignore[import]
     generate_password_hash,
     check_password_hash
 )

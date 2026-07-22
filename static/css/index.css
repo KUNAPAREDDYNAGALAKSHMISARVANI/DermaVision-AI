@@ -227,7 +227,10 @@ border-radius:16px;
 }
 
 .crop-container{
-    width:min(950px,100%);
+    width:min(950px,95vw);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
     background:var(--surface);
     border-radius:24px;
     overflow:hidden;
@@ -238,13 +241,15 @@ border-radius:16px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:20px 30px;
+    padding:16px 24px;
     border-bottom:1px solid #edf2f7;
+    flex-shrink: 0;
 }
 
 .crop-header h2{
     margin:0;
     color:var(--text);
+    font-size: 1.3rem;
 }
 
 .crop-header button{
@@ -255,16 +260,19 @@ border-radius:16px;
 }
 
 .crop-body{
-    padding:20px;
+    padding:16px;
     background:var(--surface-2);
-    min-height:450px;
+    max-height: 60vh;
+    overflow: hidden;
     display:flex;
     justify-content:center;
     align-items:center;
+    flex: 1;
 }
 
 #cropImage{
     max-width:100%;
+    max-height: 52vh;
     display:block;
 }
 
@@ -272,9 +280,10 @@ border-radius:16px;
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
-    gap:12px;
-    padding:20px;
+    gap:10px;
+    padding:16px;
     border-top:1px solid #edf2f7;
+    flex-shrink: 0;
 }
 
 .crop-toolbar button{

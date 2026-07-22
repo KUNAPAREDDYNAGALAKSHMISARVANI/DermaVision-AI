@@ -332,6 +332,7 @@ const translations = {
         step_report_desc: "पूर्वानुमान और मार्गदर्शन के साथ एक त्वरित रिपोर्ट प्राप्त करें।",
         key_features: "मुख्य विशेषताएं",
         medical_disclaimer: "चिकित्सीय अस्वीकरण",
+        medical_disclaimer_text: "डर्माविजन एआई केवल शैक्षिक और प्रारंभिक स्क्रीनिंग के लिए है।",
         dashboard_hero_title: "आपके डैशबोर्ड में स्वागत है",
         dashboard_hero_desc: "अपने एआई त्वचा विश्लेषण की निगरानी करें और पिछले स्कैन देखें।",
         start_new_scan: "नया स्कैन शुरू करें",
@@ -357,6 +358,12 @@ const translations = {
         notifications: "सूचनाएँ",
         notifications_desc: "अपडेट और रिमाइंडर प्राप्त करें।",
         coming_soon: "जल्द आ रहा है",
+        clear_scan_history: "स्कैन इतिहास साफ़ करें",
+        clear_scan_history_desc: "सभी सहेजे गए स्कैन इतिहास को हटाएँ।",
+        clear_button: "साफ़ करें",
+        reset_preferences: "प्राथमिकताएँ रीसेट करें",
+        reset_preferences_desc: "डिफ़ॉल्ट भाषा और दिखावट को पुनर्स्थापित करें।",
+        reset_button: "रीसेट",
         enabled_features: "सक्षम विशेषताएँ",
         ai_disease_detection: "एआई रोग पहचान",
         dashboard_analytics: "डैशबोर्ड विश्लेषण",
@@ -384,7 +391,6 @@ const translations = {
         analysis_status: "विश्लेषण स्थिति",
         prediction: "पूर्वानुमान",
         confidence: "आत्मविश्वास",
-        medical_disclaimer_text: "डर्माविजन एआई केवल शैक्षिक और प्रारंभिक स्क्रीनिंग के लिए है।",
         scan_again: "फिर से स्कैन करें",
         print_report: "रिपोर्ट प्रिंट करें",
         download_pdf: "पीडीएफ डाउनलोड करें",
@@ -439,22 +445,25 @@ const translations = {
 };
 
 function applyLanguage(lang) {
-    const dictionary = translations[lang];
-    if (!dictionary) return;
+    const dictionary = translations[lang] || translations.en;
+    const fallbackDictionary = translations.en;
 
     document.querySelectorAll('[data-lang]').forEach(item => {
         const key = item.dataset.lang;
-        if (key && dictionary[key]) item.textContent = dictionary[key];
+        const value = dictionary[key] || fallbackDictionary[key];
+        if (value) item.textContent = value;
     });
 
     document.querySelectorAll('[data-lang-placeholder]').forEach(item => {
         const key = item.dataset.langPlaceholder;
-        if (key && dictionary[key]) item.placeholder = dictionary[key];
+        const value = dictionary[key] || fallbackDictionary[key];
+        if (value) item.placeholder = value;
     });
 
     document.querySelectorAll('[data-lang-value]').forEach(item => {
         const key = item.dataset.langValue;
-        if (key && dictionary[key]) item.value = dictionary[key];
+        const value = dictionary[key] || fallbackDictionary[key];
+        if (value) item.value = value;
     });
 
     document.documentElement.lang = lang;

@@ -5,202 +5,244 @@ Progress Tracker | DermaVision AI
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/progress.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/progress.css') }}">
 {% endblock %}
 
 {% block content %}
-
 <div class="progress-page">
 
-<section class="progress-hero">
+    <!-- Hero Section -->
+    <section class="progress-hero">
+        <div class="hero-left">
+            <span class="progress-badge">
+                <i class="fas fa-chart-line"></i>
+                <span data-lang="progress_tracker">AI Progress Tracker</span>
+            </span>
+            <h1>Track Your <span>Skin Recovery</span></h1>
+            <p>
+                Monitor changes in diagnostic confidence, compare any two historical scans side-by-side, 
+                and receive AI-driven health evaluations over time.
+            </p>
+        </div>
+        <div class="hero-right">
+            <div class="progress-icon">
+                <i class="fas fa-heart-pulse"></i>
+            </div>
+        </div>
+    </section>
 
-<div class="hero-left">
+    <!-- Disease Filter Section -->
+    <section class="disease-filter-section">
+        <form method="GET" action="{{ url_for('progress') }}" class="disease-filter-form">
+            <div class="filter-group">
+                <label for="disease"><i class="fas fa-stethoscope"></i> Filter Progress by Condition:</label>
+                <select name="disease" id="disease" class="disease-select" onchange="this.form.submit()">
+                    <option value="all" {% if not selected_disease or selected_disease == 'all' %}selected{% endif %}>
+                        All Conditions ({% if available_diseases %}{{ available_diseases|length }} tracked{% else %}0{% endif %})
+                    </option>
+                    {% for d in available_diseases %}
+                    <option value="{{ d }}" {% if selected_disease == d %}selected{% endif %}>
+                        {{ d }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% if selected_disease and selected_disease != 'all' %}
+            <span class="active-filter-pill">
+                <i class="fas fa-filter"></i> Filtering: <strong>{{ selected_disease }}</strong>
+                <a href="{{ url_for('progress') }}" class="clear-filter-btn" title="Clear filter"><i class="fas fa-times"></i></a>
+            </span>
+            {% endif %}
+        </form>
+    </section>
 
-<span class="progress-badge">
+    <!-- Summary Metrics Section -->
+    <section class="progress-summary">
+        <div class="summary-card">
+            <i class="fas fa-images"></i>
+            <h2>{{ total_scans }}</h2>
+            <p data-lang="total_comparison_scans">Total Recorded Scans</p>
+        </div>
 
-<i class="fas fa-chart-line"></i>
+        <div class="summary-card health-score-card">
+            <i class="fas fa-shield-heart"></i>
+            <h2>{{ skin_health_score }}<span class="score-max">/100</span></h2>
+            <p>Skin Health Score (<strong>{{ health_status }}</strong>)</p>
+        </div>
 
-<span data-lang="progress_tracker">AI Progress Tracker</span>
+        <div class="summary-card">
+            <i class="fas fa-brain"></i>
+            <h2>{{ avg_confidence }}%</h2>
+            <p data-lang="average_confidence_label">Average Confidence</p>
+        </div>
 
-</span>
+        <div class="summary-card">
+            <i class="fas {% if confidence_delta >= 0 %}fa-arrow-trend-up{% else %}fa-arrow-trend-down{% endif %}"></i>
+            <h2>{% if confidence_delta > 0 %}+{% endif %}{{ confidence_delta }}%</h2>
+            <p>Confidence Shift</p>
+        </div>
+    </section>
 
-<h1 data-lang="progress_tracker">
+    <!-- Comparison Section -->
+    <section class="comparison-section">
+        <div class="section-header-flex">
+            <div class="section-title">
+                <i class="fas fa-code-compare"></i>
+                <h2>Compare Any Two Scans</h2>
+            </div>
 
-Track Your
+            <!-- Dynamic Scan Selection Dropdowns -->
+            {% if total_scans >= 2 %}
+            <form method="GET" action="{{ url_for('progress') }}" class="comparison-selector-form" id="comparisonForm">
+                {% if selected_disease %}
+                <input type="hidden" name="disease" value="{{ selected_disease }}">
+                {% endif %}
+                <div class="select-group">
+                    <label for="scan1"><i class="fas fa-history"></i> Baseline (Before):</label>
+                    <select name="scan1" id="scan1" class="scan-select" onchange="this.form.submit()">
+                        {% for s in scans %}
+                        <option value="{{ s.id }}" {% if scan1 and scan1.id == s.id %}selected{% endif %}>
+                            #{{ s.id }} - {{ s.disease }} ({{ s.scan_date[:10] }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-<span>Skin Recovery</span>
+                <div class="select-group">
+                    <label for="scan2"><i class="fas fa-clock-rotate-left"></i> Comparison (After):</label>
+                    <select name="scan2" id="scan2" class="scan-select" onchange="this.form.submit()">
+                        {% for s in scans %}
+                        <option value="{{ s.id }}" {% if scan2 and scan2.id == s.id %}selected{% endif %}>
+                            #{{ s.id }} - {{ s.disease }} ({{ s.scan_date[:10] }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+            {% endif %}
+        </div>
 
-</h1>
+        {% if scan1 and scan2 %}
+        <div class="comparison-grid">
+            <div class="compare-card">
+                <div class="card-tag baseline-tag"><i class="fas fa-calendar-day"></i> Baseline Scan</div>
+                <h3 data-lang="previous_scan">Scan #{{ scan1.id }} ({{ scan1.scan_date[:10] }})</h3>
+                <img src="{{ url_for('static', filename=scan1.image) }}" alt="Baseline Scan">
+                <div class="compare-info">
+                    <p><strong>Prediction:</strong> <span class="disease-badge">{{ scan1.disease }}</span></p>
+                    <p><strong>Confidence:</strong> <span class="conf-pill">{{ scan1.confidence }}%</span></p>
+                    <p class="scan-time"><i class="far fa-clock"></i> Recorded: {{ scan1.scan_date }}</p>
+                </div>
+            </div>
 
-<p data-lang="compare_previous_scans">
+            <div class="compare-card">
+                <div class="card-tag comparison-tag"><i class="fas fa-circle-check"></i> Latest / Follow-up</div>
+                <h3 data-lang="latest_scan_label">Scan #{{ scan2.id }} ({{ scan2.scan_date[:10] }})</h3>
+                <img src="{{ url_for('static', filename=scan2.image) }}" alt="Comparison Scan">
+                <div class="compare-info">
+                    <p><strong>Prediction:</strong> <span class="disease-badge">{{ scan2.disease }}</span></p>
+                    <p><strong>Confidence:</strong> <span class="conf-pill">{{ scan2.confidence }}%</span></p>
+                    <p class="scan-time"><i class="far fa-clock"></i> Recorded: {{ scan2.scan_date }}</p>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-scans-card">
+            <i class="fas fa-info-circle"></i>
+            <p>Upload at least two skin scans to enable detailed side-by-side visual comparisons.</p>
+            <a href="{{ url_for('home') }}" class="primary-btn"><i class="fas fa-camera"></i> Take New Scan</a>
+        </div>
+        {% endif %}
+    </section>
 
-Compare previous scans,
-observe AI confidence changes,
-and monitor your skin condition
-through time.
+    <!-- AI Recovery Analysis & Health Score Card -->
+    <section class="glass-card summary-analysis-card">
+        <div class="section-title">
+            <i class="fas fa-robot"></i>
+            <h2 data-lang="ai_recovery_analysis">{{ ai_summary_title }}</h2>
+        </div>
 
-</p>
+        <div class="health-score-widget">
+            <div class="score-label">
+                <span>Overall Skin Recovery &amp; Stability Score:</span>
+                <strong class="status-{{ health_status|lower|replace(' ', '-') }}">{{ skin_health_score }} / 100 ({{ health_status }})</strong>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ skin_health_score }}%;">
+                    <span>{{ skin_health_score }}%</span>
+                </div>
+            </div>
+        </div>
+
+        <p class="analysis-description">
+            {{ ai_summary_text }}
+        </p>
+    </section>
+
+    <!-- Confidence Trend Graph Section -->
+    <section class="glass-card chart-section">
+        <div class="section-title">
+            <i class="fas fa-chart-area"></i>
+            <h2>Confidence Trend Graph</h2>
+        </div>
+        <p class="chart-subtitle">Diagnostic confidence levels tracked across all historical skin evaluations.</p>
+        <div class="chart-container">
+            <canvas id="confidenceTrendChart"></canvas>
+        </div>
+    </section>
+
+    <!-- Skin Health Timeline Section -->
+    <section class="glass-card timeline-section">
+        <div class="section-title">
+            <i class="fas fa-timeline"></i>
+            <h2>Skin Health History Timeline</h2>
+        </div>
+
+        {% if chronological_scans %}
+        <div class="timeline-container">
+            {% for scan in chronological_scans %}
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">{{ scan.scan_date[:10] }}</div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h4>Scan #{{ scan.id }} — {{ scan.disease }}</h4>
+                        <span class="conf-badge">{{ scan.confidence }}% Confidence</span>
+                    </div>
+                    <p class="timeline-time"><i class="far fa-clock"></i> {{ scan.scan_date }}</p>
+                    <div class="timeline-actions">
+                        <a href="{{ url_for('report', scan_id=scan.id) }}" class="view-btn-sm"><i class="fas fa-eye"></i> View Report</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty-timeline">No history recorded yet.</p>
+        {% endif %}
+    </section>
+
+    <!-- Action Buttons -->
+    <section class="history-actions">
+        <a href="{{ url_for('home') }}" class="primary-btn" data-lang="new_scan">
+            <i class="fas fa-plus-circle"></i> New Scan
+        </a>
+        <a href="{{ url_for('history') }}" class="secondary-btn" data-lang="history_button">
+            <i class="fas fa-list"></i> Full Scan History
+        </a>
+    </section>
 
 </div>
-
-<div class="hero-right">
-
-<div class="progress-icon">
-
-<i class="fas fa-heart-pulse"></i>
-
-</div>
-
-</div>
-
-</section>
-<section class="progress-summary">
-
-<div class="summary-card">
-
-<i class="fas fa-images"></i>
-
-<h2>3</h2>
-
-<p data-lang="total_comparison_scans">Total Comparison Scans</p>
-
-</div>
-
-<div class="summary-card">
-
-<i class="fas fa-arrow-trend-down"></i>
-
-<h2>28%</h2>
-
-<p data-lang="improvement">Improvement</p>
-
-</div>
-
-<div class="summary-card">
-
-<i class="fas fa-brain"></i>
-
-<h2>87%</h2>
-
-<p data-lang="average_confidence_label">Average Confidence</p>
-
-</div>
-
-</section>
-<section class="comparison-section">
-
-<div class="section-title">
-
-<i class="fas fa-code-compare"></i>
-
-<h2 data-lang="before_vs_after">Before vs After</h2>
-
-</div>
-
-<div class="comparison-grid">
-
-<div class="compare-card">
-
-<h3 data-lang="previous_scan">Previous Scan</h3>
-
-<img src="{{ url_for('static',
-filename='images/sample_before.jpg') }}">
-
-<p>
-
-Prediction:
-Eczema
-
-</p>
-
-<p>
-
-Confidence:
-91%
-
-</p>
-
-</div>
-
-<div class="compare-card">
-
-<h3 data-lang="latest_scan_label">Latest Scan</h3>
-
-<img src="{{ url_for('static',
-filename='images/sample_after.jpg') }}">
-
-<p>
-
-Prediction:
-Mild Eczema
-
-</p>
-
-<p>
-
-Confidence:
-67%
-
-</p>
-
-</div>
-
-</div>
-
-</section>
-<section class="glass-card">
-
-<div class="section-title">
-
-<i class="fas fa-chart-area"></i>
-
-<h2 data-lang="ai_recovery_analysis">AI Recovery Analysis</h2>
-<p data-lang="according_scans">
-
-According to previous scans,
-the affected skin appears to show signs of improvement.
-
-Continue following the
-recommended skincare routine
-and consult your dermatologist
-if symptoms worsen.
-
-</p>
-</div>
-
-<p>
-
-According to previous scans,
-the affected skin appears to
-show signs of improvement.
-
-Continue following the
-recommended skincare routine
-and consult your dermatologist
-if symptoms worsen.
-
-</p>
-
-</section>
-<section class="history-actions">
-
-<a href="{{ url_for('home') }}"
-class="primary-btn" data-lang="new_scan">
-
-New Scan
-
-</a>
-
-<a href="{{ url_for('history') }}"
-class="secondary-btn" data-lang="history_button">
-
-History
-
-</a>
-
-</section>
-
-</div>
-
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    window.trendDates = {{ trend_dates_json|safe }};
+    window.trendConfidences = {{ trend_confidences_json|safe }};
+    window.trendDiseases = {{ trend_diseases_json|safe }};
+    window.trendIds = {{ trend_ids_json|safe if trend_ids_json else '[]' }};
+    window.scan1Id = {{ scan1.id if scan1 else 'null' }};
+    window.scan2Id = {{ scan2.id if scan2 else 'null' }};
+</script>
+<script src="{{ url_for('static', filename='js/progress.js') }}"></script>
 {% endblock %}

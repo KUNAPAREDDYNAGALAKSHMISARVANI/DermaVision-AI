@@ -7,356 +7,308 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="dashboard-page">
 
-    <!-- ========================= -->
-    <!-- Dashboard Hero -->
-    <!-- ========================= -->
-
-    <section class="dashboard-hero">
-
-        <div class="hero-content">
-
-            <span class="dashboard-badge">
-                AI Healthcare Analytics
+    <!-- ==========================================================
+         1. Header Section
+    ========================================================== -->
+    <section class="dashboard-header-hero">
+        <div class="header-left">
+            <span class="user-greeting-badge">
+                <i class="fas fa-user-doctor"></i> Personalized Healthcare Overview
             </span>
-
-            <h1 data-lang="dashboard_hero_title">
-                Welcome to Your Dashboard
-            </h1>
-
-            <p data-lang="dashboard_hero_desc">
-                Monitor your AI skin analysis, review previous scans,
-                and track your skin health journey with detailed analytics.
-            </p>
-
-            <a href="{{ url_for('home') }}" class="primary-btn" data-lang="start_new_scan">
-                <i class="fas fa-camera"></i>
-                Start New Scan
-            </a>
-
+            <h1>Welcome back, <span>{{ user_name }}</span></h1>
+            <p class="header-subtitle">Here's your latest skin health overview and analytics.</p>
         </div>
-
     </section>
 
-
-    <!-- ========================= -->
-    <!-- Statistics -->
-    <!-- ========================= -->
-
-    <section class="stats-grid">
-
-        <div class="stat-card">
-
-            <div class="stat-icon blue">
-
-                <i class="fas fa-images"></i>
-
+    {% if total_scans == 0 %}
+    <!-- ==========================================================
+         4. Empty State UI (New Users With No Scans)
+    ========================================================== -->
+    <section class="dashboard-empty-state">
+        <div class="empty-state-card">
+            <div class="empty-icon-circle">
+                <i class="fas fa-shield-heart"></i>
             </div>
-
-            <div>
-
-                <h2>{{ total_scans }}</h2>
-
-                <p data-lang="total_scans">Total Scans</p>
-
-            </div>
-
+            <h2>Begin Your Skin Health Journey</h2>
+            <p>You don't have any recorded skin scans yet. Take your first skin scan to unlock personalized health analytics, risk indicators, and progress tracking.</p>
+            <a href="{{ url_for('home') }}" class="primary-btn pulse-btn">
+                <i class="fas fa-camera"></i> Take First Skin Scan
+            </a>
         </div>
+    </section>
+    {% else %}
 
-
-        <div class="stat-card">
-
-            <div class="stat-icon green">
-
-                <i class="fas fa-chart-line"></i>
-
+    <!-- ==========================================================
+         2. Top Metrics Cards Grid
+    ========================================================== -->
+    <section class="metrics-grid">
+        <!-- Latest Scan -->
+        <div class="metric-card">
+            <div class="metric-icon blue">
+                <i class="fas fa-file-medical"></i>
             </div>
-
-            <div>
-
-                <h2>{{ avg_confidence }}%</h2>
-
-                <p data-lang="average_confidence">Average Confidence</p>
-
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon orange">
-
-                <i class="fas fa-virus"></i>
-
-            </div>
-
-            <div>
-
-                <h2>
-
+            <div class="metric-details">
+                <span class="metric-label">Latest Scan</span>
+                <h3 class="metric-value text-truncate">
                     {% if latest_scan %}
                         {{ latest_scan["disease"] }}
                     {% else %}
-                        --
+                        No Scans
                     {% endif %}
-
-                </h2>
-
-                <p data-lang="latest_prediction">Latest Prediction</p>
-
+                </h3>
+                <span class="metric-subtext">
+                    {% if latest_scan %}<i class="far fa-clock"></i> {{ latest_scan["scan_date"][:10] }}{% endif %}
+                </span>
             </div>
-
         </div>
 
-
-        <div class="stat-card">
-
-            <div class="stat-icon red">
-
-                <i class="fas fa-calendar"></i>
-
+        <!-- Total Scans -->
+        <div class="metric-card">
+            <div class="metric-icon green">
+                <i class="fas fa-images"></i>
             </div>
-
-            <div>
-
-                <h2>
-
-                    {% if latest_scan %}
-                        {{ latest_scan["scan_date"][:10] }}
-                    {% else %}
-                        --
-                    {% endif %}
-
-                </h2>
-
-                <p data-lang="latest_scan">Latest Scan</p>
-
+            <div class="metric-details">
+                <span class="metric-label">Total Scans</span>
+                <h3 class="metric-value">{{ total_scans }}</h3>
+                <span class="metric-subtext">Recorded evaluations</span>
             </div>
-
         </div>
 
+        <!-- Average Confidence -->
+        <div class="metric-card">
+            <div class="metric-icon purple">
+                <i class="fas fa-brain"></i>
+            </div>
+            <div class="metric-details">
+                <span class="metric-label">Average Confidence</span>
+                <h3 class="metric-value">{{ avg_confidence }}%</h3>
+                <span class="metric-subtext">Diagnostic accuracy</span>
+            </div>
+        </div>
+
+        <!-- Risk Level -->
+        <div class="metric-card">
+            <div class="metric-icon {{ risk_color }}">
+                <i class="fas fa-shield-virus"></i>
+            </div>
+            <div class="metric-details">
+                <span class="metric-label">Risk Level</span>
+                <h3 class="metric-value">
+                    <span class="risk-badge risk-{{ risk_color }}">{{ overall_risk_level }}</span>
+                </h3>
+                <span class="metric-subtext">Based on recent scan</span>
+            </div>
+        </div>
     </section>
 
-
-    <!-- ========================= -->
-    <!-- Charts -->
-    <!-- ========================= -->
-
-    <section class="charts-grid">
-
-        <div class="chart-card">
-
-                <div class="card-header">
-
-                <h2 data-lang="disease_distribution">Disease Distribution</h2>
-
-            </div>
-
-            <canvas id="diseaseChart"></canvas>
-
+    <!-- ==========================================================
+         3. Quick Actions Hub
+    ========================================================== -->
+    <section class="quick-actions-section">
+        <div class="section-title">
+            <i class="fas fa-bolt"></i>
+            <h2>Quick Actions</h2>
         </div>
+        <div class="quick-actions-grid">
+            <a href="{{ url_for('home') }}" class="action-tile">
+                <div class="tile-icon-wrapper blue-tile">
+                    <i class="fas fa-microscope"></i>
+                </div>
+                <h4>New Scan</h4>
+                <p>Analyze a new skin image</p>
+            </a>
 
-        <div class="chart-card">
+            <a href="{{ url_for('progress') }}" class="action-tile">
+                <div class="tile-icon-wrapper green-tile">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4>Progress Tracker</h4>
+                <p>Compare scans &amp; trends</p>
+            </a>
 
-                <div class="card-header">
+            <a href="{{ url_for('history') }}" class="action-tile">
+                <div class="tile-icon-wrapper amber-tile">
+                    <i class="fas fa-clock-rotate-left"></i>
+                </div>
+                <h4>History</h4>
+                <p>View complete log</p>
+            </a>
 
-                <h2 data-lang="confidence_trend">Average AI Confidence by Disease</h2>
-
-            </div>
-
-            <canvas id="confidenceChart"></canvas>
-
+            <a href="{{ url_for('settings') }}" class="action-tile">
+                <div class="tile-icon-wrapper purple-tile">
+                    <i class="fas fa-sliders"></i>
+                </div>
+                <h4>Settings</h4>
+                <p>Manage account &amp; theme</p>
+            </a>
         </div>
-
     </section>
 
-
-    <!-- ========================= -->
-    <!-- Recent Scans -->
-    <!-- ========================= -->
-
-    <section class="recent-section">
-
-            <div class="section-header">
-
-            <h2 data-lang="recent_ai_scans">Recent AI Scans</h2>
-
+    <!-- ==========================================================
+         4. Analytics Charts Grid
+    ========================================================== -->
+    <section class="charts-section-grid">
+        <!-- Weekly Activity Chart -->
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h3><i class="fas fa-calendar-week"></i> Weekly Activity</h3>
+                <span class="chart-tag">Last 7 Days</span>
+            </div>
+            <div class="chart-canvas-wrapper">
+                <canvas id="weeklyActivityChart"></canvas>
+            </div>
         </div>
 
-        <div class="table-wrapper">
+        <!-- Disease Distribution -->
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h3><i class="fas fa-pie-chart"></i> Disease Distribution</h3>
+                <span class="chart-tag">All History</span>
+            </div>
+            <div class="chart-canvas-wrapper">
+                <canvas id="diseaseDistributionChart"></canvas>
+            </div>
+        </div>
 
-            <table>
+        <!-- Monthly Confidence Trend -->
+        <div class="chart-card chart-card-wide">
+            <div class="chart-card-header">
+                <h3><i class="fas fa-chart-area"></i> Monthly Confidence Trend</h3>
+                <span class="chart-tag">Monthly Averages</span>
+            </div>
+            <div class="chart-canvas-wrapper">
+                <canvas id="monthlyConfidenceChart"></canvas>
+            </div>
+        </div>
+    </section>
 
+    <!-- ==========================================================
+         5. Risk Indicators Section
+    ========================================================== -->
+    <section class="risk-indicators-section">
+        <div class="section-title">
+            <i class="fas fa-triangle-exclamation"></i>
+            <h2>Risk Indicators</h2>
+        </div>
+        <div class="risk-cards-grid">
+            <div class="risk-card high-risk-border">
+                <div class="risk-card-header">
+                    <span class="risk-pill red-pill">High Risk</span>
+                    <i class="fas fa-circle-exclamation red-icon"></i>
+                </div>
+                <h3>{{ high_risk_count }}</h3>
+                <p>Melanoma, Squamous cell carcinoma, Actinic keratosis</p>
+            </div>
+
+            <div class="risk-card moderate-risk-border">
+                <div class="risk-card-header">
+                    <span class="risk-pill amber-pill">Moderate Risk</span>
+                    <i class="fas fa-circle-pause amber-icon"></i>
+                </div>
+                <h3>{{ moderate_risk_count }}</h3>
+                <p>Atopic Dermatitis, Tinea Ringworm Candidiasis</p>
+            </div>
+
+            <div class="risk-card low-risk-border">
+                <div class="risk-card-header">
+                    <span class="risk-pill green-pill">Low Risk / Benign</span>
+                    <i class="fas fa-circle-check green-icon"></i>
+                </div>
+                <h3>{{ low_risk_count }}</h3>
+                <p>Benign keratosis, Dermatofibroma, Melanocytic nevus, Vascular lesion</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================
+         6. Personalized Health Insights
+    ========================================================== -->
+    <section class="health-insights-section">
+        <div class="insights-card">
+            <div class="insights-icon">
+                <i class="fas fa-heart-pulse"></i>
+            </div>
+            <div class="insights-content">
+                <h3>{{ health_tip.title }}</h3>
+                <p>{{ health_tip.message }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================
+         7. Recent Activity Table (Search + Sort)
+    ========================================================== -->
+    <section class="recent-activity-section">
+        <div class="activity-header-flex">
+            <div class="section-title">
+                <i class="fas fa-list-check"></i>
+                <h2>Recent Activity</h2>
+            </div>
+            <div class="table-search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="dashboardTableSearch" placeholder="Search disease, date, confidence..." onkeyup="filterDashboardTable()">
+            </div>
+        </div>
+
+        <div class="table-card-wrapper">
+            <table class="recent-activity-table" id="dashboardRecentTable">
                 <thead>
-
                     <tr>
-
-                        <th>Image</th>
-
-                        <th>Disease</th>
-
-                        <th>Confidence</th>
-
-                        <th>Date</th>
-
+                        <th>Scan</th>
+                        <th onclick="sortDashboardTable(1)" class="sortable-th">
+                            Disease <i class="fas fa-sort"></i>
+                        </th>
+                        <th onclick="sortDashboardTable(2)" class="sortable-th">
+                            Confidence <i class="fas fa-sort"></i>
+                        </th>
+                        <th onclick="sortDashboardTable(3)" class="sortable-th">
+                            Date <i class="fas fa-sort"></i>
+                        </th>
+                        <th>Action</th>
                     </tr>
-
                 </thead>
-
                 <tbody>
-
-                {% for scan in recent_scans %}
-
+                    {% for scan in recent_scans %}
                     <tr>
-
                         <td>
-
-                         <img
-                            src="{{ url_for('static', filename=scan['image']) }}"
-                            class="scan-thumb"
-                            alt="Scan Image">
-
+                            <img src="{{ url_for('static', filename=scan['image']) }}" class="table-scan-thumb" alt="Scan">
                         </td>
-
                         <td>
-
-                            {{ scan["disease"] }}
-
+                            <span class="disease-title-badge">{{ scan["disease"] }}</span>
                         </td>
-
                         <td>
-
-                            {{ scan["confidence"] }}%
-
+                            <span class="conf-badge-pill">{{ scan["confidence"] }}%</span>
                         </td>
-
+                        <td class="date-cell">
+                            <i class="far fa-clock"></i> {{ scan["scan_date"] }}
+                        </td>
                         <td>
-
-                            {{ scan["scan_date"] }}
-
+                            <a href="{{ url_for('report', scan_id=scan['id']) }}" class="view-report-link">
+                                <i class="fas fa-eye"></i> View Report
+                            </a>
                         </td>
-
                     </tr>
-
-                {% endfor %}
-
+                    {% endfor %}
                 </tbody>
-
             </table>
-
         </div>
-
     </section>
-
-
-    <!-- ========================= -->
-    <!-- Quick Actions -->
-    <!-- ========================= -->
-
-    <section class="quick-actions">
-
-        <div class="action-card">
-
-            <i class="fas fa-camera"></i>
-
-            <h3>New Scan</h3>
-
-            <p>Upload another skin image.</p>
-
-            <a href="{{ url_for('home') }}" class="primary-btn">
-
-                Scan Now
-
-            </a>
-
-        </div>
-
-        <div class="action-card">
-
-            <i class="fas fa-history"></i>
-
-            <h3>History</h3>
-
-            <p>View previous AI analyses.</p>
-
-            <a href="{{ url_for('history') }}" class="primary-btn">
-
-                View History
-
-            </a>
-
-        </div>
-
-        <div class="action-card">
-
-            <i class="fas fa-file-medical"></i>
-
-            <h3>Reports</h3>
-
-            <p>Generate printable reports.</p>
-
-            <button class="primary-btn">
-
-                Coming Soon
-
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- ========================= -->
-    <!-- Health Tip -->
-    <!-- ========================= -->
-
-    <section class="health-tip">
-
-        <div class="tip-icon">
-
-            <i class="fas fa-heart"></i>
-
-        </div>
-
-        <div>
-
-           <h2>{{ health_tip.title }}</h2>
-
-<p>
-
-    {{ health_tip.message }}
-
-</p>
-
-        </div>
-
-    </section>
+    {% endif %}
 
 </div>
-
 {% endblock %}
 
 {% block extra_js %}
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
-
-const diseaseLabels = {{ disease_labels | tojson }};
-const diseaseCounts = {{ disease_counts | tojson }};
-const confidenceLabels = {{ confidence_labels | tojson }};
-const confidenceValues = {{ confidence_values | tojson }};
-
-console.log("Disease Labels:", diseaseLabels);
-console.log("Disease Counts:", diseaseCounts);
-console.log("Confidence Labels:", confidenceLabels);
-console.log("Confidence Values:", confidenceValues);
-
+    window.weeklyLabels = {{ weekly_labels_json|safe if weekly_labels_json else '[]' }};
+    window.weeklyCounts = {{ weekly_counts_json|safe if weekly_counts_json else '[]' }};
+    window.diseaseLabels = {{ disease_labels|tojson }};
+    window.diseaseCounts = {{ disease_counts|tojson }};
+    window.monthlyLabels = {{ monthly_labels_json|safe if monthly_labels_json else '[]' }};
+    window.monthlyConfidences = {{ monthly_confidences_json|safe if monthly_confidences_json else '[]' }};
 </script>
-
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-
 {% endblock %}
