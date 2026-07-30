@@ -60,13 +60,13 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
-MODEL_PATH = "model/best_model.keras"
+MODEL_PATH_H5 = "model/best_model.h5"
+MODEL_PATH_KERAS = "model/best_model.keras"
 
-try:
-    model = tf.keras.models.load_model(MODEL_PATH, compile=False)
-except Exception:
-    import keras
-    model = keras.models.load_model(MODEL_PATH, compile=False)
+if os.path.exists(MODEL_PATH_H5):
+    model = tf.keras.models.load_model(MODEL_PATH_H5, compile=False)
+else:
+    model = tf.keras.models.load_model(MODEL_PATH_KERAS, compile=False)
 
 
 class_names = [
