@@ -1,0 +1,195 @@
+/* ==========================================================
+   DermaVision AI — Map Finder CSS
+========================================================== */
+
+.map-finder-page {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 25px 20px 60px;
+}
+
+.finder-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    color: #ffffff;
+    padding: 30px 35px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+}
+
+.finder-hero .hero-badge {
+    background: rgba(255, 255, 255, 0.15);
+    color: #a5b4fc;
+}
+
+.finder-hero h1 {
+    font-size: 2.2rem;
+    margin-bottom: 6px;
+    color: #ffffff;
+}
+
+.finder-hero p {
+    color: #c7d2fe;
+    font-size: 0.95rem;
+}
+
+.map-split-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+    height: 680px;
+}
+
+.map-wrapper-card {
+    background: var(--card-bg, #ffffff);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border-color, #e2e8f0);
+}
+
+.map-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: var(--card-bg, #ffffff);
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+}
+
+.map-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-color, #0f172a);
+}
+
+.geo-status {
+    font-size: 0.85rem;
+    color: #6366f1;
+}
+
+.leaflet-map-canvas {
+    flex: 1;
+    width: 100%;
+    z-index: 1;
+}
+
+.map-sidebar-card {
+    background: var(--card-bg, #ffffff);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color, #e2e8f0);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+    margin-bottom: 15px;
+}
+
+.sidebar-header h3 {
+    font-size: 1.1rem;
+    color: var(--text-color, #0f172a);
+}
+
+.sort-tag {
+    font-size: 0.78rem;
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.sidebar-doctors-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 5px;
+}
+
+.map-doc-tile {
+    background: var(--input-bg, #f8fafc);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 14px;
+    padding: 15px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.map-doc-tile:hover, .map-doc-tile.active {
+    border-color: #4f46e5;
+    background: #eef2ff;
+}
+
+.tile-top {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.tile-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.tile-info h4 a {
+    color: var(--text-color, #0f172a);
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.tile-spec {
+    font-size: 0.8rem;
+    color: #6366f1;
+}
+
+.tile-hospital {
+    font-size: 0.78rem;
+    color: var(--subtext-color, #64748b);
+}
+
+.tile-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed var(--border-color, #cbd5e1);
+    padding-top: 8px;
+}
+
+.distance-pill {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #4f46e5;
+}
+
+.fee-pill {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #16a34a;
+}
+
+@media (max-width: 900px) {
+    .map-split-container {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+
+    .leaflet-map-canvas {
+        height: 400px;
+    }
+}

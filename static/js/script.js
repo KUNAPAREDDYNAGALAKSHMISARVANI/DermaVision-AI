@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (files.length > 0) {
 
                 imageInput.files = files;
+                imageInput.dispatchEvent(new Event("change"));
 
                 showPreview(files[0]);
 

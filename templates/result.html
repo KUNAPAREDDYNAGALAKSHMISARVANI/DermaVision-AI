@@ -57,7 +57,23 @@
 
         </div>
 
+    <!-- ========================= -->
+    <!-- High-Risk Prediction Alert Banner -->
+    <!-- ========================= -->
+    {% if is_high_risk %}
+    <section class="high-risk-alert-banner">
+        <div class="alert-icon-wrap">
+            <i class="fas fa-triangle-exclamation"></i>
+        </div>
+        <div class="alert-content">
+            <h3>High-Risk Prediction</h3>
+            <p>This AI result suggests features associated with a higher-risk skin condition (<strong>{{ disease }}</strong>). Please consult a qualified dermatologist as soon as possible. This AI system does not provide a medical diagnosis.</p>
+        </div>
+        <div class="alert-action">
+            <a href="#recommendedDoctors" class="alert-btn"><i class="fas fa-user-doctor"></i> View Recommended Specialists</a>
+        </div>
     </section>
+    {% endif %}
 
     <!-- ========================= -->
     <!-- Summary Section -->
@@ -519,6 +535,36 @@
 
 
     <!-- ========================= -->
+    <!-- Recommended Dermatologists Near Your Location -->
+    <!-- ========================= -->
+    <section class="glass-card" id="recommendedDoctors">
+        <div class="section-title">
+            <i class="fas fa-user-doctor"></i>
+            <h2>Recommended Dermatologists Near Your Location</h2>
+        </div>
+        <p class="section-subtext">Connect with experienced skin specialists for clinical evaluations and consultation.</p>
+
+        <div class="recommended-docs-grid">
+            {% for doc in recommended_doctors %}
+            <div class="rec-doc-card">
+                <img src="{{ doc.image }}" alt="{{ doc.name }}" class="rec-avatar">
+                <div class="rec-info">
+                    <h4><a href="{{ url_for('doctor_detail', doctor_id=doc.id) }}">{{ doc.name }}</a></h4>
+                    <p class="rec-spec">{{ doc.specialization }}</p>
+                    <p class="rec-hospital"><i class="fas fa-hospital"></i> {{ doc.hospital }} ({{ doc.city }})</p>
+                    <span class="rec-rating"><i class="fas fa-star"></i> {{ doc.rating }}</span>
+                </div>
+                <div class="rec-actions">
+                    <a href="{{ url_for('doctor_detail', doctor_id=doc.id) }}" class="primary-btn btn-sm">
+                        <i class="fas fa-calendar-check"></i> Book Consultation
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- ========================= -->
     <!-- Medical Disclaimer -->
     <!-- ========================= -->
 
@@ -582,44 +628,6 @@
 
     </section>
 
-
-    <!-- ========================= -->
-    <!-- Footer -->
-    <!-- ========================= -->
-
-    <footer class="report-footer">
-
-        <div class="footer-content">
-
-            <div>
-
-                <h3>DermaVision AI</h3>
-
-                <p>
-                    AI-powered skin disease analysis platform.
-                </p>
-
-            </div>
-
-            <div>
-
-                <p>
-
-                    Report generated successfully.
-
-                </p>
-
-                <p>
-
-                    © 2026 DermaVision AI
-
-                </p>
-
-            </div>
-
-        </div>
-
-    </footer>
 
 </div>
 

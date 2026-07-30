@@ -198,9 +198,9 @@ Progress Tracker | DermaVision AI
             <h2>Skin Health History Timeline</h2>
         </div>
 
-        {% if chronological_scans %}
+        {% if scans %}
         <div class="timeline-container">
-            {% for scan in chronological_scans %}
+            {% for scan in scans %}
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-date">{{ scan.scan_date[:10] }}</div>

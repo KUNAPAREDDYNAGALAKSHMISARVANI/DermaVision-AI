@@ -109,31 +109,29 @@
         </div>
         <div class="setting-item">
 
-            <div class="setting-item">
+            <div>
 
-    <div>
+                <h3 data-lang="clear_scan_history">🗑️ Clear Scan History</h3>
 
-        <h3 data-lang="clear_scan_history">🗑️ Clear Scan History</h3>
+                <p data-lang="clear_scan_history_desc">Delete all previously stored scan history.</p>
 
-        <p data-lang="clear_scan_history_desc">Delete all previously stored scan history.</p>
+            </div>
 
-    </div>
+            <form action="{{ url_for('clear_history') }}" method="POST">
 
-    <form action="{{ url_for('clear_history') }}" method="POST">
+                <button
+                    id="clearHistoryBtn"
+                    type="button"
+                    class="primary-btn"
+                    data-lang-value="clear_button">
 
-        <button
-    id="clearHistoryBtn"
-    type="button"
-    class="primary-btn"
-    data-lang-value="clear_button">
+                    Clear
 
-    Clear
+                </button>
 
-</button>
+            </form>
 
-    </form>
-
-</div>
+        </div>
 <div class="setting-item">
 
     <div>
@@ -221,6 +219,9 @@
 
 
 </div>
+
+{% endblock %}
+
 {% block extra_js %}
 
 <script>
@@ -239,6 +240,4 @@ if (themeToggle) {
 
 </script>
 <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
-{% endblock %}
-
 {% endblock %}

@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+
+{% block title %}Medical Guidance & When to See a Doctor | DermaVision AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/guidance.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="guidance-page">
+
+    <!-- Hero Header -->
+    <section class="guidance-hero">
+        <div class="hero-left">
+            <span class="hero-badge">
+                <i class="fas fa-stethoscope"></i> Educational Medical Portal
+            </span>
+            <h1 data-lang="guidance_hero_title">When Should I See a Doctor?</h1>
+            <p data-lang="guidance_hero_desc">Learn how to identify warning signs, check skin lesions using the ABCDE rule, and complete an educational risk checklist.</p>
+        </div>
+        <div class="hero-right">
+            <div class="hero-icon-circle">
+                <i class="fas fa-heart-pulse"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Urgent Referral Notice Card -->
+    <div class="clinical-disclaimer-box">
+        <i class="fas fa-shield-halved"></i>
+        <div>
+            <h3>Responsible Medical Disclaimer</h3>
+            <p>DermaVision AI is designed for preliminary screening and educational awareness only. It does not provide medical diagnoses. If you observe rapidly evolving moles, bleeding, persistent pain, or severe skin changes, please consult a qualified dermatologist immediately.</p>
+        </div>
+    </div>
+
+    <!-- Section 1: The ABCDE Mole Checklist -->
+    <section class="glass-card guidance-section">
+        <div class="section-title">
+            <i class="fas fa-magnifying-glass-chart"></i>
+            <h2>The ABCDE Rule for Mole Self-Examination</h2>
+        </div>
+        <p class="section-subtext">The ABCDE criteria are globally recognized visual markers used by dermatologists to identify suspicious moles or potential melanomas.</p>
+
+        <div class="abcde-grid">
+            <div class="abcde-card">
+                <div class="letter-badge badge-a">A</div>
+                <h3>Asymmetry</h3>
+                <p>One half of the spot or mole does not match the other half in shape or contour.</p>
+            </div>
+
+            <div class="abcde-card">
+                <div class="letter-badge badge-b">B</div>
+                <h3>Border</h3>
+                <p>The edges of the lesion are irregular, scalloped, blurred, ragged, or poorly defined.</p>
+            </div>
+
+            <div class="abcde-card">
+                <div class="letter-badge badge-c">C</div>
+                <h3>Color</h3>
+                <p>The color is uneven across the lesion, showing shades of brown, black, pink, red, white, or blue.</p>
+            </div>
+
+            <div class="abcde-card">
+                <div class="letter-badge badge-d">D</div>
+                <h3>Diameter</h3>
+                <p>The spot is larger than 6 millimeters across (about the size of a pencil eraser), though melanomas can be smaller.</p>
+            </div>
+
+            <div class="abcde-card">
+                <div class="letter-badge badge-e">E</div>
+                <h3>Evolving</h3>
+                <p>The mole is changing in size, shape, color, elevation, or exhibiting new symptoms like bleeding or itching.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Educational Risk Self-Assessment Checklist -->
+    <section class="glass-card guidance-section">
+        <div class="section-title">
+            <i class="fas fa-clipboard-check"></i>
+            <h2>Educational Risk Awareness Questionnaire</h2>
+        </div>
+        <p class="section-subtext">Check any symptoms you have noticed recently to evaluate whether a clinical consultation is recommended.</p>
+
+        <div class="checklist-wrapper">
+            <form id="riskAssessmentForm" onsubmit="return false;">
+                <div class="checklist-grid">
+                    <label class="check-item">
+                        <input type="checkbox" class="risk-check" value="evolving">
+                        <span class="check-box"></span>
+                        <div class="check-label">
+                            <strong>Has a mole or lesion recently changed in size, shape, or color?</strong>
+                            <small>Noticeable growth over recent weeks or months.</small>
+                        </div>
+                    </label>
+
+                    <label class="check-item">
+                        <input type="checkbox" class="risk-check" value="bleeding">
+                        <span class="check-box"></span>
+                        <div class="check-label">
+                            <strong>Is the spot oozing, crusting, or bleeding spontaneously?</strong>
+                            <small>Sores that do not heal after 3 to 4 weeks.</small>
+                        </div>
+                    </label>
+
+                    <label class="check-item">
+                        <input type="checkbox" class="risk-check" value="sensation">
+                        <span class="check-box"></span>
+                        <div class="check-label">
+                            <strong>Does the area itch, burn, tingle, or feel persistently painful?</strong>
+                            <small>Unexplained irritation or tenderness.</small>
+                        </div>
+                    </label>
+
+                    <label class="check-item">
+                        <input type="checkbox" class="risk-check" value="borders">
+                        <span class="check-box"></span>
+                        <div class="check-label">
+                            <strong>Are the edges of the spot jagged, irregular, or spreading outward?</strong>
+                            <small>Pigment spreading from the border into surrounding skin.</small>
+                        </div>
+                    </label>
+
+                    <label class="check-item">
+                        <input type="checkbox" class="risk-check" value="multi_color">
+                        <span class="check-box"></span>
+                        <div class="check-label">
+                            <strong>Does the lesion display multiple colors (black, blue, red, or white)?</strong>
+                            <small>Varied shades within a single spot.</small>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="assessment-action-row">
+                    <button type="button" class="primary-btn" onclick="evaluateRiskForm()">
+                        <i class="fas fa-calculator"></i> Evaluate My Responses
+                    </button>
+                </div>
+            </form>
+
+            <div id="assessmentResultCard" class="assessment-result-card" style="display:none;">
+                <div class="result-header">
+                    <i class="fas fa-stethoscope" id="resultIcon"></i>
+                    <h3 id="resultTitle">Assessment Summary</h3>
+                </div>
+                <p id="resultText"></p>
+                <div class="result-cta-row">
+                    <a href="{{ url_for('doctors') }}" class="primary-btn btn-sm"><i class="fas fa-user-md"></i> Find Dermatologists</a>
+                    <a href="{{ url_for('find_dermatologist') }}" class="secondary-btn btn-sm"><i class="fas fa-map-pin"></i> View Map Finder</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Comprehensive Medical Resources -->
+    <section class="glass-card guidance-section">
+        <div class="section-title">
+            <i class="fas fa-book-medical"></i>
+            <h2>Comprehensive Medical Resources &amp; Care Guidelines</h2>
+        </div>
+
+        <div class="resources-grid">
+            <div class="resource-card">
+                <i class="fas fa-sun gold-icon"></i>
+                <h3>Sun Protection Guidelines</h3>
+                <ul>
+                    <li>Apply broad-spectrum SPF 30+ sunscreen daily.</li>
+                    <li>Reapply every 2 hours when outdoors or after swimming.</li>
+                    <li>Avoid direct peak sunlight between 10:00 AM and 04:00 PM.</li>
+                    <li>Wear UV-blocking sunglasses and wide-brimmed hats.</li>
+                </ul>
+            </div>
+
+            <div class="resource-card">
+                <i class="fas fa-hand-holding-hand green-icon"></i>
+                <h3>Skin Self-Examination Tips</h3>
+                <ul>
+                    <li>Examine your skin once a month in a well-lit room.</li>
+                    <li>Use a full-length mirror and hand mirror for hard-to-see areas.</li>
+                    <li>Check scalp, palm, soles, fingernails, and behind knees.</li>
+                    <li>Take clear photos to monitor mole evolution over time.</li>
+                </ul>
+            </div>
+
+            <div class="resource-card">
+                <i class="fas fa-shower blue-icon"></i>
+                <h3>Daily Skincare Best Practices</h3>
+                <ul>
+                    <li>Use gentle, fragrance-free cleansers to preserve moisture.</li>
+                    <li>Hydrate skin daily with non-comedogenic moisturizers.</li>
+                    <li>Avoid harsh scrubbing over sensitive skin lesions.</li>
+                    <li>Stay hydrated by drinking adequate water throughout the day.</li>
+                </ul>
+            </div>
+
+            <div class="resource-card">
+                <i class="fas fa-triangle-exclamation red-icon"></i>
+                <h3>Red Flag Warning Signs</h3>
+                <ul>
+                    <li>Moles that rapidly change shape within weeks.</li>
+                    <li>Non-healing skin ulcers or persistent open sores.</li>
+                    <li>New growths appearing after age 40.</li>
+                    <li>Lesions accompanied by fever, swelling, or pus.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Action Footer Callout -->
+    <section class="guidance-action-footer">
+        <h2>Ready for a Professional Consultation?</h2>
+        <p>Explore verified dermatologists near your location and schedule a demo appointment today.</p>
+        <div class="action-btns">
+            <a href="{{ url_for('doctors') }}" class="primary-btn"><i class="fas fa-user-md"></i> Browse Dermatologists</a>
+            <a href="{{ url_for('find_dermatologist') }}" class="secondary-btn"><i class="fas fa-map-location-dot"></i> Interactive Map Finder</a>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function evaluateRiskForm() {
+    const checked = document.querySelectorAll('.risk-check:checked');
+    const resultCard = document.getElementById('assessmentResultCard');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultText = document.getElementById('resultText');
+    const resultIcon = document.getElementById('resultIcon');
+
+    resultCard.style.display = 'block';
+
+    if (checked.length === 0) {
+        resultIcon.className = 'fas fa-circle-check green-icon';
+        resultTitle.innerText = 'Routine Self-Care Recommended';
+        resultText.innerText = 'You did not select any urgent risk factors. Continue performing routine monthly skin self-examinations and practicing daily sun protection.';
+    } else if (checked.length <= 2) {
+        resultIcon.className = 'fas fa-circle-exclamation amber-icon';
+        resultTitle.innerText = 'Consider Consulting a Dermatologist';
+        resultText.innerText = `You checked ${checked.length} risk indicator(s). Based on your responses, we recommend scheduling a routine consultation with a dermatologist for a professional skin evaluation.`;
+    } else {
+        resultIcon.className = 'fas fa-triangle-exclamation red-icon';
+        resultTitle.innerText = 'Clinical Examination Advised';
+        resultText.innerText = `You selected ${checked.length} notable risk indicators. It is strongly advised to schedule a clinical consultation with a dermatologist as soon as possible for a complete skin examination.`;
+    }
+
+    resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+{% endblock %}

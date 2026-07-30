@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Nearby Dermatologist Finder | DermaVision AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/map.css') }}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+
+{% block content %}
+<div class="map-finder-page">
+
+    <!-- Header Banner -->
+    <section class="finder-hero">
+        <div class="hero-left">
+            <span class="hero-badge">
+                <i class="fas fa-map-location-dot"></i> Interactive Map Finder
+            </span>
+            <h1 data-lang="map_hero_title">Nearby Dermatologist Finder</h1>
+            <p data-lang="map_hero_desc">Locate specialists near your current GPS position, view clinic addresses, and calculate direct distances using open maps.</p>
+        </div>
+
+        <div class="hero-right-actions">
+            <button type="button" id="locateUserBtn" class="primary-btn pulse-btn">
+                <i class="fas fa-location-crosshairs"></i> Find Near My Location
+            </button>
+        </div>
+    </section>
+
+    <!-- Main Split View Container (Map + Doctor List Side-by-Side) -->
+    <div class="map-split-container">
+        
+        <!-- Left: Interactive OpenStreetMap View -->
+        <div class="map-wrapper-card">
+            <div class="map-toolbar">
+                <span class="map-title"><i class="fas fa-layer-group"></i> OpenStreetMap Interactive View</span>
+                <span class="geo-status" id="geoStatusText"><i class="fas fa-circle-info"></i> Click 'Find Near My Location' to measure distance</span>
+            </div>
+            <div id="mapView" class="leaflet-map-canvas"></div>
+        </div>
+
+        <!-- Right: Doctors List Sidebar -->
+        <div class="map-sidebar-card">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-list"></i> Dermatologists (<span id="doctorCount">{{ doctors|length }}</span>)</h3>
+                <span class="sort-tag" id="sortNoticeTag">Sorted by default</span>
+            </div>
+
+            <div class="sidebar-doctors-list" id="mapDoctorList">
+                {% for doc in doctors %}
+                <div class="map-doc-tile" data-id="{{ doc.id }}" data-lat="{{ doc.latitude }}" data-lng="{{ doc.longitude }}" id="docTile-{{ doc.id }}">
+                    <div class="tile-top">
+                        <img src="{{ doc.image }}" alt="{{ doc.name }}" class="tile-avatar">
+                        <div class="tile-info">
+                            <h4><a href="{{ url_for('doctor_detail', doctor_id=doc.id) }}">{{ doc.name }}</a></h4>
+                            <p class="tile-spec">{{ doc.specialization }}</p>
+                            <span class="tile-hospital"><i class="fas fa-hospital"></i> {{ doc.hospital }}</span>
+                        </div>
+                    </div>
+
+                    <div class="tile-bottom">
+                        <div class="tile-meta">
+                            <span class="distance-pill" id="distPill-{{ doc.id }}"><i class="fas fa-location-dot"></i> {{ doc.city }}</span>
+                            <span class="fee-pill">₹{{ doc.consultation_fee }}</span>
+                        </div>
+                        <a href="{{ url_for('doctor_detail', doctor_id=doc.id) }}" class="secondary-btn btn-xs">
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    window.doctorsData = {{ doctors_json|safe }};
+</script>
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}

@@ -22,6 +22,43 @@
         </div>
     </section>
 
+    {% if is_high_risk %}
+    <!-- High-Risk Alert Banner -->
+    <section class="dashboard-high-risk-alert">
+        <div class="alert-left">
+            <i class="fas fa-triangle-exclamation"></i>
+            <div>
+                <h3>High-Risk Prediction Notice</h3>
+                <p>Your latest scan indicated features associated with <strong>{{ latest_scan["disease"] }}</strong>. Please consult a dermatologist as soon as possible.</p>
+            </div>
+        </div>
+        <div class="alert-right">
+            <a href="{{ url_for('doctors') }}" class="primary-btn btn-sm"><i class="fas fa-user-doctor"></i> Find Dermatologist</a>
+            <a href="{{ url_for('when_to_see_doctor') }}" class="secondary-btn btn-sm"><i class="fas fa-stethoscope"></i> View Guidance</a>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if upcoming_appointment %}
+    <!-- Upcoming Appointment Summary Card -->
+    <section class="upcoming-app-banner">
+        <div class="app-banner-left">
+            <div class="app-icon-wrap">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="app-details">
+                <span class="app-badge"><i class="fas fa-clock"></i> Upcoming Consultation</span>
+                <h3>{{ upcoming_appointment.doctor.name if upcoming_appointment.doctor else 'Dermatologist Appointment' }}</h3>
+                <p><i class="fas fa-hospital"></i> {{ upcoming_appointment.doctor.hospital if upcoming_appointment.doctor else 'Clinical Clinic' }} &bull; <i class="far fa-calendar"></i> {{ upcoming_appointment.date }} at {{ upcoming_appointment.time }}</p>
+            </div>
+        </div>
+        <div class="app-banner-right">
+            <span class="status-badge status-{{ upcoming_appointment.status|lower }}">{{ upcoming_appointment.status }}</span>
+            <a href="{{ url_for('my_appointments') }}" class="secondary-btn btn-sm">Manage Booking</a>
+        </div>
+    </section>
+    {% endif %}
+
     {% if total_scans == 0 %}
     <!-- ==========================================================
          4. Empty State UI (New Users With No Scans)
@@ -112,36 +149,36 @@
             <h2>Quick Actions</h2>
         </div>
         <div class="quick-actions-grid">
-            <a href="{{ url_for('home') }}" class="action-tile">
+            <a href="{{ url_for('doctors') }}" class="action-tile">
                 <div class="tile-icon-wrapper blue-tile">
-                    <i class="fas fa-microscope"></i>
+                    <i class="fas fa-user-doctor"></i>
                 </div>
-                <h4>New Scan</h4>
-                <p>Analyze a new skin image</p>
+                <h4>Find Doctors</h4>
+                <p>Browse verified dermatologists</p>
             </a>
 
-            <a href="{{ url_for('progress') }}" class="action-tile">
+            <a href="{{ url_for('find_dermatologist') }}" class="action-tile">
                 <div class="tile-icon-wrapper green-tile">
-                    <i class="fas fa-chart-line"></i>
+                    <i class="fas fa-map-location-dot"></i>
                 </div>
-                <h4>Progress Tracker</h4>
-                <p>Compare scans &amp; trends</p>
+                <h4>Map Finder</h4>
+                <p>Locate nearby clinics</p>
             </a>
 
-            <a href="{{ url_for('history') }}" class="action-tile">
+            <a href="{{ url_for('my_appointments') }}" class="action-tile">
                 <div class="tile-icon-wrapper amber-tile">
-                    <i class="fas fa-clock-rotate-left"></i>
+                    <i class="fas fa-calendar-check"></i>
                 </div>
-                <h4>History</h4>
-                <p>View complete log</p>
+                <h4>Appointments</h4>
+                <p>View demo booking portal</p>
             </a>
 
-            <a href="{{ url_for('settings') }}" class="action-tile">
+            <a href="{{ url_for('when_to_see_doctor') }}" class="action-tile">
                 <div class="tile-icon-wrapper purple-tile">
-                    <i class="fas fa-sliders"></i>
+                    <i class="fas fa-stethoscope"></i>
                 </div>
-                <h4>Settings</h4>
-                <p>Manage account &amp; theme</p>
+                <h4>Medical Guidance</h4>
+                <p>ABCDE mole rule &amp; tips</p>
             </a>
         </div>
     </section>

@@ -439,7 +439,19 @@ const translations = {
         footer_quick_links: "त्वरित लिंक",
         footer_features: "विशेषताएं",
         footer_notice_title: "महत्वपूर्ण सूचना",
-        footer_notice_text: "यह टूल केवल शैक्षिक और प्रारंभिक स्क्रीनिंग के उद्देश्य से है।"
+        footer_notice_text: "यह टूल केवल शैक्षिक और प्रारंभिक स्क्रीनिंग के उद्देश्य से है।",
+        nav_doctors: "डॉक्टर्स",
+        nav_find_nearby: "पास के डॉक्टर",
+        nav_appointments: "अपॉइंटमेंट्स",
+        nav_guidance: "मार्गदर्शन",
+        doctors_hero_title: "त्वचा विशेषज्ञों से परामर्श लें",
+        doctors_hero_desc: "योग्य त्वचा विशेषज्ञों की सूची देखें और अपॉइंटमेंट शेड्यूल करें।",
+        map_hero_title: "पास के त्वचा विशेषज्ञ खोजें",
+        map_hero_desc: "अपने निकटतम त्वचा रोग विशेषज्ञों को खोजें और दूरी की गणना करें।",
+        my_appointments_title: "मेरे अपॉइंटमेंट्स",
+        my_appointments_desc: "अपने शेड्यूल किए गए परामर्श और इतिहास देखें।",
+        guidance_hero_title: "मुझे डॉक्टर को कब दिखाना चाहिए?",
+        guidance_hero_desc: "चेतावनी के संकेतों को पहचानें और एबीसीडीई नियम सीखें।"
     }
 
 };

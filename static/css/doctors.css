@@ -1,0 +1,514 @@
+/* ==========================================================
+   DermaVision AI — Doctors Directory & Appointment CSS
+========================================================== */
+
+.doctors-page, .doctor-detail-page, .appointments-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+}
+
+/* Hero Section */
+.doctors-hero, .appointments-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(25, 118, 210, 0.08), rgba(67, 160, 71, 0.08));
+    padding: 35px 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(25, 118, 210, 0.15);
+    margin-bottom: 25px;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.doctors-hero h1, .appointments-hero h1 {
+    font-size: 2.2rem;
+    color: var(--text-color, #0f172a);
+    margin-bottom: 8px;
+}
+
+.doctors-hero p, .appointments-hero p {
+    color: var(--subtext-color, #475569);
+    font-size: 1rem;
+    max-width: 650px;
+}
+
+/* Filter Form */
+.filter-section {
+    background: var(--card-bg, #ffffff);
+    padding: 20px 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 25px;
+}
+
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.search-input-wrapper, .select-wrapper {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+}
+
+.search-input-wrapper i, .select-wrapper i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+.search-input-wrapper input, .select-wrapper select {
+    width: 100%;
+    padding: 12px 15px 12px 42px;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    background: var(--input-bg, #f8fafc);
+    color: var(--text-color, #0f172a);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.search-input-wrapper input:focus, .select-wrapper select:focus {
+    border-color: #1976d2;
+}
+
+.search-btn {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+}
+
+.clear-btn {
+    color: #64748b;
+    font-size: 0.9rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Map Callout Banner */
+.map-callout-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    padding: 20px 25px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+}
+
+.callout-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.callout-left i {
+    font-size: 2.2rem;
+    color: #4f46e5;
+}
+
+.callout-left h3 {
+    margin-bottom: 4px;
+    color: #1e1b4b;
+}
+
+.callout-left p {
+    color: #4338ca;
+    font-size: 0.9rem;
+}
+
+/* Doctor Cards Grid */
+.doctors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+.doctor-card {
+    background: var(--card-bg, #ffffff);
+    border-radius: 18px;
+    padding: 24px;
+    border: 1px solid var(--border-color, #e2e8f0);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.doctor-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+}
+
+.doctor-card-header {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.doctor-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1976d2;
+}
+
+.doctor-rating {
+    font-size: 0.85rem;
+    color: #f59e0b;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.doctor-card-header h3 a {
+    color: var(--text-color, #0f172a);
+    text-decoration: none;
+    font-size: 1.15rem;
+}
+
+.doctor-card-header h3 a:hover {
+    color: #1976d2;
+}
+
+.doctor-title {
+    font-size: 0.85rem;
+    color: var(--subtext-color, #64748b);
+    line-height: 1.3;
+}
+
+.doctor-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px 0;
+    border-top: 1px solid var(--border-color, #f1f5f9);
+    border-bottom: 1px solid var(--border-color, #f1f5f9);
+    margin-bottom: 18px;
+}
+
+.doc-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--text-color, #334155);
+}
+
+.doc-detail-item i {
+    width: 18px;
+    color: #1976d2;
+}
+
+.doctor-footer-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-sm {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    flex: 1;
+    justify-content: center;
+}
+
+.btn-xs {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+/* Modal Overlay */
+.booking-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s, visibility 0.25s;
+}
+
+.booking-modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.booking-modal-card {
+    background: var(--card-bg, #ffffff);
+    width: 90%;
+    max-width: 600px;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.modal-header h2 {
+    font-size: 1.4rem;
+    color: var(--text-color, #0f172a);
+}
+
+.close-modal-btn {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: #94a3b8;
+    cursor: pointer;
+}
+
+.demo-disclaimer-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+    color: #92400e;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    margin-bottom: 20px;
+}
+
+.booking-form .form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.booking-form .form-group {
+    flex: 1;
+    margin-bottom: 15px;
+}
+
+.booking-form label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-color, #334155);
+}
+
+.booking-form input, .booking-form select, .booking-form textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color, #cbd5e1);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background: var(--input-bg, #ffffff);
+    color: var(--text-color, #0f172a);
+}
+
+.modal-footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* Receipt Card */
+.booking-receipt-card {
+    background: #f0fdf4;
+    border: 2px dashed #43a047;
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.receipt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dcfce7;
+    padding-bottom: 15px;
+    margin-bottom: 18px;
+}
+
+.receipt-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.green-icon {
+    font-size: 2rem;
+    color: #16a34a;
+}
+
+.receipt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.receipt-item label {
+    font-size: 0.78rem;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+.receipt-item p {
+    font-size: 1rem;
+    color: #0f172a;
+}
+
+.receipt-footer-disclaimer {
+    font-size: 0.82rem;
+    color: #15803d;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Table Card */
+.table-card-section {
+    padding: 25px;
+    border-radius: 18px;
+}
+
+.appointments-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.appointments-table th, .appointments-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+}
+
+.doc-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.doc-cell-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-confirmed {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.status-cancelled {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* Doctor Detail Profile Page */
+.profile-hero-card {
+    display: flex;
+    gap: 30px;
+    background: var(--card-bg, #ffffff);
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 20px;
+    object-fit: cover;
+    border: 4px solid #1976d2;
+}
+
+.profile-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.meta-item i {
+    font-size: 1.4rem;
+    color: #1976d2;
+}
+
+.profile-cta-row {
+    display: flex;
+    gap: 15px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+}
+
+.education-list, .availability-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.education-list li, .availability-list li {
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-color, #334155);
+}
+
+.education-list i {
+    color: #16a34a;
+}

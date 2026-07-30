@@ -1,14 +1,22 @@
 import os
 import uuid
 import json
+import math
 import sqlite3
 from datetime import datetime, timedelta
 
 import numpy as np
 import tensorflow as tf
 
-from database import save_scan, get_connection
-from flask import Flask, render_template, request, redirect, url_for, send_file, session
+from database import (
+    save_scan,
+    get_connection,
+    save_appointment,
+    get_user_appointments,
+    get_upcoming_appointment,
+    cancel_appointment
+)
+from flask import Flask, render_template, request, redirect, url_for, send_file, session, flash
 from PIL import Image
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
@@ -19,6 +27,31 @@ from auth import auth
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dermavision_secret_key")
 app.register_blueprint(auth)
+
+
+def load_doctors():
+    doctors_file = os.path.join("data", "doctors.json")
+    if os.path.exists(doctors_file):
+        with open(doctors_file, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def get_doctor_by_id(doc_id):
+    doctors = load_doctors()
+    for doc in doctors:
+        if doc["id"] == int(doc_id):
+            return doc
+    return None
+
+
+def haversine_distance(lat1, lon1, lat2, lon2):
+    R = 6371.0
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat / 2)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    return round(R * c, 1)
 
 
 UPLOAD_FOLDER = "static/uploads"
@@ -345,6 +378,20 @@ def dashboard():
         }
         health_tip = tips.get(disease, health_tip)
 
+    # Retrieve upcoming appointment for dashboard widget
+    upcoming_row = get_upcoming_appointment(user_id)
+    upcoming_appointment = None
+    if upcoming_row:
+        doc = get_doctor_by_id(upcoming_row["doctor_id"])
+        upcoming_appointment = {
+            "id": upcoming_row["id"],
+            "doctor": doc,
+            "patient_name": upcoming_row["patient_name"],
+            "date": upcoming_row["appointment_date"],
+            "time": upcoming_row["appointment_time"],
+            "status": upcoming_row["status"]
+        }
+
     return render_template(
         "dashboard.html",
         user_name=user_name,
@@ -363,7 +410,9 @@ def dashboard():
         weekly_counts_json=json.dumps(weekly_counts),
         monthly_labels_json=json.dumps(monthly_labels),
         monthly_confidences_json=json.dumps(monthly_confidences),
-        health_tip=health_tip
+        health_tip=health_tip,
+        upcoming_appointment=upcoming_appointment,
+        is_high_risk=(latest_scan and latest_scan["disease"] in high_risk_diseases)
     )
 
 
@@ -390,24 +439,27 @@ def report(scan_id):
 
         return "Report not found or unauthorized.", 404
 
-    info = disease_info[scan["disease"]]
+    info = disease_info.get(scan["disease"], {
+        "description": "Information not available for this condition.",
+        "symptoms": ["Consult a dermatologist for evaluation."],
+        "causes": ["Unknown or unmapped condition."],
+        "precautions": ["Seek medical advice."]
+    })
 
     image_url = "/static/" + scan["image"]
+    high_risk_diseases = ["Melanoma", "Squamous cell carcinoma", "Actinic keratosis"]
+    is_high_risk = scan["disease"] in high_risk_diseases
+    all_doctors = load_doctors()
 
     return render_template(
-
         "result.html",
-
         image_path=scan["image"],
-
         image_url=image_url,
-
         disease=scan["disease"],
-
         confidence=scan["confidence"],
-
-        disease_info=info
-
+        disease_info=info,
+        is_high_risk=is_high_risk,
+        recommended_doctors=all_doctors[:3]
     )
     
 @app.route("/download_pdf/<int:scan_id>")
@@ -432,7 +484,12 @@ def download_pdf(scan_id):
     if scan is None:
         return "Report not found or unauthorized.", 404
 
-    info = disease_info[scan["disease"]]
+    info = disease_info.get(scan["disease"], {
+        "description": "Information not available for this condition.",
+        "symptoms": ["Consult a dermatologist for evaluation."],
+        "causes": ["Unknown or unmapped condition."],
+        "precautions": ["Seek medical advice."]
+    })
 
     pdf_path = f"static/reports/report_{scan_id}.pdf"
 
@@ -908,9 +965,7 @@ def predict():
         )
 
 
-        img_array = tf.keras.applications.mobilenet_v2.preprocess_input(
-            img_array
-        )
+        img_array = img_array.astype(np.float32) / 255.0
 
 
         prediction = model.predict(img_array)
@@ -937,7 +992,9 @@ def predict():
         )
 
         info = disease_info[disease]
-
+        high_risk_diseases = ["Melanoma", "Squamous cell carcinoma", "Actinic keratosis"]
+        is_high_risk = disease in high_risk_diseases
+        all_doctors = load_doctors()
 
         return render_template(
             "result.html",
@@ -945,7 +1002,9 @@ def predict():
             image_url="/" + image_path.replace("\\","/"),
             disease=disease,
             confidence=confidence,
-            disease_info=info
+            disease_info=info,
+            is_high_risk=is_high_risk,
+            recommended_doctors=all_doctors[:3]
         )
 
 
@@ -955,6 +1014,138 @@ def predict():
         import traceback
         traceback.print_exc()
         raise
+
+
+# ==========================================
+# Phase 4 Clinical Referral Routes
+# ==========================================
+
+@app.route("/doctors")
+def doctors():
+    all_doctors = load_doctors()
+    search_query = request.args.get("search", "").strip()
+    city_filter = request.args.get("city", "").strip()
+    spec_filter = request.args.get("specialization", "").strip()
+
+    filtered = []
+    cities = sorted(list(set(d["city"] for d in all_doctors)))
+    specializations = sorted(list(set(d["specialization"] for d in all_doctors)))
+
+    for doc in all_doctors:
+        if city_filter and doc["city"].lower() != city_filter.lower():
+            continue
+        if spec_filter and spec_filter.lower() not in doc["specialization"].lower():
+            continue
+        if search_query:
+            sq = search_query.lower()
+            match_name = sq in doc["name"].lower()
+            match_hosp = sq in doc["hospital"].lower()
+            match_city = sq in doc["city"].lower()
+            match_spec = sq in doc["specialization"].lower()
+            if not (match_name or match_hosp or match_city or match_spec):
+                continue
+        filtered.append(doc)
+
+    return render_template(
+        "doctors.html",
+        doctors=filtered,
+        cities=cities,
+        specializations=specializations,
+        search_query=search_query,
+        selected_city=city_filter,
+        selected_spec=spec_filter
+    )
+
+
+@app.route("/doctor/<int:doctor_id>")
+def doctor_detail(doctor_id):
+    doc = get_doctor_by_id(doctor_id)
+    if not doc:
+        flash("Doctor profile not found.", "warning")
+        return redirect(url_for("doctors"))
+    return render_template("doctor_detail.html", doctor=doc)
+
+
+@app.route("/find_dermatologist")
+def find_dermatologist():
+    all_doctors = load_doctors()
+    doctors_json = json.dumps(all_doctors)
+    return render_template("find_dermatologist.html", doctors=all_doctors, doctors_json=doctors_json)
+
+
+@app.route("/book_appointment", methods=["POST"])
+def book_appointment():
+    user_id = session.get("user_id")
+    doctor_id = request.form.get("doctor_id")
+    patient_name = request.form.get("patient_name", "").strip()
+    patient_phone = request.form.get("patient_phone", "").strip()
+    patient_email = request.form.get("patient_email", "").strip()
+    appointment_date = request.form.get("appointment_date", "").strip()
+    appointment_time = request.form.get("appointment_time", "").strip()
+    notes = request.form.get("notes", "").strip()
+
+    if not doctor_id or not patient_name or not patient_phone or not appointment_date or not appointment_time:
+        flash("Please fill in all required appointment fields.", "danger")
+        return redirect(request.referrer or url_for("doctors"))
+
+    app_id = save_appointment(
+        user_id=user_id,
+        doctor_id=int(doctor_id),
+        patient_name=patient_name,
+        patient_phone=patient_phone,
+        patient_email=patient_email,
+        appointment_date=appointment_date,
+        appointment_time=appointment_time,
+        notes=notes
+    )
+
+    flash("Demo Appointment Booked Successfully! (Simulated Scheduling)", "success")
+    return redirect(url_for("my_appointments", booked_id=app_id))
+
+
+@app.route("/my_appointments")
+def my_appointments():
+    user_id = session.get("user_id")
+    rows = get_user_appointments(user_id)
+    
+    appointments_list = []
+    for r in rows:
+        doc = get_doctor_by_id(r["doctor_id"])
+        appointments_list.append({
+            "id": r["id"],
+            "doctor": doc,
+            "patient_name": r["patient_name"],
+            "patient_phone": r["patient_phone"],
+            "patient_email": r["patient_email"],
+            "appointment_date": r["appointment_date"],
+            "appointment_time": r["appointment_time"],
+            "notes": r["notes"],
+            "status": r["status"],
+            "created_at": r["created_at"]
+        })
+
+    booked_id = request.args.get("booked_id", type=int)
+    just_booked = None
+    if booked_id:
+        for app in appointments_list:
+            if app["id"] == booked_id:
+                just_booked = app
+                break
+
+    return render_template("appointments.html", appointments=appointments_list, just_booked=just_booked)
+
+
+@app.route("/cancel_appointment/<int:app_id>", methods=["POST"])
+def cancel_app(app_id):
+    user_id = session.get("user_id")
+    cancel_appointment(app_id, user_id)
+    flash("Appointment has been cancelled.", "info")
+    return redirect(url_for("my_appointments"))
+
+
+@app.route("/when_to_see_doctor")
+def when_to_see_doctor():
+    return render_template("guidance.html")
 
 
 if __name__ == "__main__":

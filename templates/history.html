@@ -234,21 +234,25 @@ Start First Scan
 
 const searchInput=document.getElementById("searchInput");
 
-searchInput.addEventListener("keyup",function(){
+if (searchInput) {
+    searchInput.addEventListener("keyup",function(){
 
-let filter=this.value.toLowerCase();
+        let filter=this.value.toLowerCase();
 
-let rows=document.querySelectorAll("#historyTable tbody tr");
+        let rows=document.querySelectorAll("#historyTable tbody tr");
 
-rows.forEach(function(row){
+        rows.forEach(function(row){
 
-let disease=row.querySelector(".disease-name").innerText.toLowerCase();
+            let diseaseEl = row.querySelector(".disease-name");
+            if (diseaseEl) {
+                let disease = diseaseEl.innerText.toLowerCase();
+                row.style.display = disease.includes(filter) ? "" : "none";
+            }
 
-row.style.display=disease.includes(filter)?"":"none";
+        });
 
-});
-
-});
+    });
+}
 
 </script>
 

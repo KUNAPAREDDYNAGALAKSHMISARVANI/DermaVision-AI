@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}My Appointments | DermaVision AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/doctors.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="appointments-page">
+
+    <!-- Header Hero -->
+    <section class="appointments-hero">
+        <div class="hero-left">
+            <span class="hero-badge">
+                <i class="fas fa-calendar-check"></i> Patient Booking Portal
+            </span>
+            <h1 data-lang="my_appointments_title">My Appointments</h1>
+            <p data-lang="my_appointments_desc">View your upcoming scheduled consultations, appointment statuses, and historical booking logs.</p>
+        </div>
+        <div class="hero-right-action">
+            <a href="{{ url_for('doctors') }}" class="primary-btn">
+                <i class="fas fa-plus-circle"></i> Book New Consultation
+            </a>
+        </div>
+    </section>
+
+    <!-- Just Booked Confirmation Receipt Banner -->
+    {% if just_booked %}
+    <section class="booking-receipt-card">
+        <div class="receipt-header">
+            <div class="receipt-title">
+                <i class="fas fa-circle-check green-icon"></i>
+                <div>
+                    <h2>Demo Appointment Confirmed!</h2>
+                    <p>Booking ID: <strong>#APP-{{ "%05d"|format(just_booked.id) }}</strong></p>
+                </div>
+            </div>
+            <span class="status-badge status-{{ just_booked.status|lower }}">{{ just_booked.status }}</span>
+        </div>
+
+        <div class="receipt-grid">
+            <div class="receipt-item">
+                <label>Doctor</label>
+                <p><strong>{{ just_booked.doctor.name if just_booked.doctor else 'Dermatology Specialist' }}</strong></p>
+                <small>{{ just_booked.doctor.hospital if just_booked.doctor else '' }}</small>
+            </div>
+            <div class="receipt-item">
+                <label>Date &amp; Time</label>
+                <p><strong>{{ just_booked.appointment_date }}</strong></p>
+                <small>{{ just_booked.appointment_time }}</small>
+            </div>
+            <div class="receipt-item">
+                <label>Patient Details</label>
+                <p><strong>{{ just_booked.patient_name }}</strong></p>
+                <small>{{ just_booked.patient_phone }}</small>
+            </div>
+            <div class="receipt-item">
+                <label>Consultation Fee</label>
+                <p><strong>₹{{ just_booked.doctor.consultation_fee if just_booked.doctor else '800' }}</strong></p>
+                <small>Pay at Clinic</small>
+            </div>
+        </div>
+
+        <div class="receipt-footer-disclaimer">
+            <i class="fas fa-info-circle"></i>
+            <span><strong>Demo Booking Notice:</strong> This is a simulated appointment demonstration created within DermaVision AI. It is stored in your project profile for clinical referral testing.</span>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Appointments History List -->
+    <section class="glass-card table-card-section">
+        <div class="section-title">
+            <i class="fas fa-clock-rotate-left"></i>
+            <h2>Booking History</h2>
+        </div>
+
+        {% if appointments %}
+        <div class="table-responsive">
+            <table class="appointments-table">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Doctor / Hospital</th>
+                        <th>Patient</th>
+                        <th>Date &amp; Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in appointments %}
+                    <tr>
+                        <td>
+                            <strong class="app-id-pill">#APP-{{ "%05d"|format(app.id) }}</strong>
+                        </td>
+                        <td>
+                            {% if app.doctor %}
+                            <div class="doc-cell">
+                                <img src="{{ app.doctor.image }}" alt="{{ app.doctor.name }}" class="doc-cell-avatar">
+                                <div>
+                                    <strong><a href="{{ url_for('doctor_detail', doctor_id=app.doctor.id) }}">{{ app.doctor.name }}</a></strong>
+                                    <p>{{ app.doctor.hospital }} ({{ app.doctor.city }})</p>
+                                </div>
+                            </div>
+                            {% else %}
+                            <span>Dermatology Specialist</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <strong>{{ app.patient_name }}</strong>
+                            <p class="sub-text">{{ app.patient_phone }}</p>
+                        </td>
+                        <td>
+                            <div class="date-cell">
+                                <span><i class="far fa-calendar"></i> {{ app.appointment_date }}</span>
+                                <small><i class="far fa-clock"></i> {{ app.appointment_time }}</small>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge status-{{ app.status|lower }}">{{ app.status }}</span>
+                        </td>
+                        <td>
+                            {% if app.status != 'Cancelled' %}
+                            <form action="{{ url_for('cancel_app', app_id=app.id) }}" method="POST" onsubmit="return confirm('Cancel this appointment?')">
+                                <button type="submit" class="delete-btn btn-xs">
+                                    <i class="fas fa-times-circle"></i> Cancel
+                                </button>
+                            </form>
+                            {% else %}
+                            <span class="cancelled-text">Cancelled</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-appointments">
+            <i class="fas fa-calendar-xmark"></i>
+            <h2>No Appointments Booked Yet</h2>
+            <p>You haven't scheduled any demo dermatologist appointments. Explore our directory to find specialists.</p>
+            <a href="{{ url_for('doctors') }}" class="primary-btn"><i class="fas fa-user-md"></i> Find &amp; Book Dermatologist</a>
+        </div>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}

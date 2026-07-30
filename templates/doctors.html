@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}Dermatologist Directory | DermaVision AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/doctors.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="doctors-page">
+
+    <!-- Hero Header -->
+    <section class="doctors-hero">
+        <div class="hero-content">
+            <span class="hero-badge">
+                <i class="fas fa-user-md"></i> Clinical Referral Directory
+            </span>
+            <h1 data-lang="doctors_hero_title">Find &amp; Consult Dermatologists</h1>
+            <p data-lang="doctors_hero_desc">Browse verified dermatologists, compare qualifications, and schedule demo appointments for expert skin evaluations.</p>
+        </div>
+    </section>
+
+    <!-- Search & Filter Bar -->
+    <section class="filter-section">
+        <form method="GET" action="{{ url_for('doctors') }}" class="filter-form">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" name="search" value="{{ search_query }}" placeholder="Search by name, hospital, specialization..." data-lang-placeholder="search_doctor_placeholder">
+            </div>
+
+            <div class="select-wrapper">
+                <i class="fas fa-location-dot"></i>
+                <select name="city" onchange="this.form.submit()">
+                    <option value="">All Cities</option>
+                    {% for c in cities %}
+                    <option value="{{ c }}" {% if selected_city == c %}selected{% endif %}>{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="select-wrapper">
+                <i class="fas fa-stethoscope"></i>
+                <select name="specialization" onchange="this.form.submit()">
+                    <option value="">All Specializations</option>
+                    {% for s in specializations %}
+                    <option value="{{ s }}" {% if selected_spec == s %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="primary-btn search-btn">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+            {% if search_query or selected_city or selected_spec %}
+            <a href="{{ url_for('doctors') }}" class="clear-btn" title="Reset Filters"><i class="fas fa-rotate-left"></i> Reset</a>
+            {% endif %}
+        </form>
+    </section>
+
+    <!-- Quick Navigation Banner to Map Finder -->
+    <div class="map-callout-card">
+        <div class="callout-left">
+            <i class="fas fa-map-location-dot"></i>
+            <div>
+                <h3>Prefer an Interactive Map Search?</h3>
+                <p>Use our Nearby Dermatologist Map Finder with automatic GPS distance calculation.</p>
+            </div>
+        </div>
+        <a href="{{ url_for('find_dermatologist') }}" class="secondary-btn">
+            <i class="fas fa-compass"></i> Open Nearby Map Finder
+        </a>
+    </div>
+
+    <!-- Doctors Cards Grid -->
+    <section class="doctors-grid-container">
+        {% if doctors %}
+        <div class="doctors-grid">
+            {% for doc in doctors %}
+            <div class="doctor-card">
+                <div class="doctor-card-header">
+                    <img src="{{ doc.image }}" alt="{{ doc.name }}" class="doctor-avatar" loading="lazy">
+                    <div class="doctor-header-info">
+                        <div class="doctor-rating">
+                            <i class="fas fa-star"></i> <span>{{ doc.rating }}</span> <small>({{ doc.reviews_count }} reviews)</small>
+                        </div>
+                        <h3><a href="{{ url_for('doctor_detail', doctor_id=doc.id) }}">{{ doc.name }}</a></h3>
+                        <p class="doctor-title">{{ doc.title }}</p>
+                    </div>
+                </div>
+
+                <div class="doctor-body">
+                    <div class="doc-detail-item">
+                        <i class="fas fa-hospital"></i>
+                        <span>{{ doc.hospital }} ({{ doc.city }})</span>
+                    </div>
+                    <div class="doc-detail-item">
+                        <i class="fas fa-briefcase"></i>
+                        <span>{{ doc.experience_years }} Years Experience</span>
+                    </div>
+                    <div class="doc-detail-item">
+                        <i class="fas fa-stethoscope"></i>
+                        <span>{{ doc.specialization }}</span>
+                    </div>
+                    <div class="doc-detail-item">
+                        <i class="fas fa-indian-rupee-sign"></i>
+                        <span>Consultation Fee: <strong>₹{{ doc.consultation_fee }}</strong></span>
+                    </div>
+                </div>
+
+                <div class="doctor-footer-actions">
+                    <a href="{{ url_for('doctor_detail', doctor_id=doc.id) }}" class="secondary-btn btn-sm">
+                        <i class="fas fa-circle-info"></i> View Profile
+                    </a>
+                    <button type="button" class="primary-btn btn-sm open-booking-modal" data-id="{{ doc.id }}" data-name="{{ doc.name }}" data-hospital="{{ doc.hospital }}">
+                        <i class="fas fa-calendar-check"></i> Book Appointment
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-doctors-found">
+            <i class="fas fa-user-doctor"></i>
+            <h2>No Dermatologists Found</h2>
+            <p>No specialists matched your filter criteria. Try expanding your location or search terms.</p>
+            <a href="{{ url_for('doctors') }}" class="primary-btn"><i class="fas fa-rotate-left"></i> View All Doctors</a>
+        </div>
+        {% endif %}
+    </section>
+
+</div>
+
+<!-- Global Appointment Booking Modal -->
+<div id="bookingModal" class="booking-modal-overlay">
+    <div class="booking-modal-card">
+        <div class="modal-header">
+            <div>
+                <h2><i class="fas fa-calendar-check"></i> Demo Appointment Booking</h2>
+                <p id="modalDoctorSub">Schedule a consultation with <strong id="modalDocName">Doctor</strong></p>
+            </div>
+            <button type="button" class="close-modal-btn" id="closeBookingModal"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="demo-disclaimer-pill">
+            <i class="fas fa-info-circle"></i>
+            <span><strong>Demo Appointment Booking:</strong> This feature demonstrates how appointment scheduling works in DermaVision AI. It does not create real clinical appointments.</span>
+        </div>
+
+        <form action="{{ url_for('book_appointment') }}" method="POST" class="booking-form">
+            <input type="hidden" name="doctor_id" id="modalDoctorId" value="">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="patient_name"><i class="fas fa-user"></i> Patient Name *</label>
+                    <input type="text" id="patient_name" name="patient_name" value="{{ session.get('user_name', '') }}" placeholder="Enter full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="patient_phone"><i class="fas fa-phone"></i> Contact Phone *</label>
+                    <input type="tel" id="patient_phone" name="patient_phone" placeholder="Enter 10-digit mobile number" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="patient_email"><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="email" id="patient_email" name="patient_email" placeholder="name@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="appointment_date"><i class="fas fa-calendar-day"></i> Preferred Date *</label>
+                    <input type="date" id="appointment_date" name="appointment_date" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="appointment_time"><i class="fas fa-clock"></i> Preferred Time Slot *</label>
+                <select id="appointment_time" name="appointment_time" required>
+                    <option value="">Select Time Slot</option>
+                    <option value="10:00 AM">10:00 AM - Morning</option>
+                    <option value="11:30 AM">11:30 AM - Morning</option>
+                    <option value="02:00 PM">02:00 PM - Afternoon</option>
+                    <option value="04:30 PM">04:30 PM - Evening</option>
+                    <option value="06:00 PM">06:00 PM - Evening</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="notes"><i class="fas fa-note-sticky"></i> Symptoms / Reason for Visit</label>
+                <textarea id="notes" name="notes" rows="3" placeholder="Briefly describe your skin concern or uploaded AI scan result..."></textarea>
+            </div>
+
+            <div class="modal-footer-actions">
+                <button type="button" class="secondary-btn" id="cancelBookingBtn">Cancel</button>
+                <button type="submit" class="primary-btn"><i class="fas fa-check-circle"></i> Confirm Demo Booking</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/doctors.js') }}"></script>
+{% endblock %}
