@@ -199,5 +199,8 @@ def cancel_appointment(appointment_id, user_id=None):
     connection.close()
 
 
+# Ensure database tables exist automatically on module import
+create_database()
+
 if __name__ == "__main__":
     create_database()
