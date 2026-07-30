@@ -62,7 +62,11 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 MODEL_PATH = "model/best_model.keras"
 
-model = tf.keras.models.load_model(MODEL_PATH)
+try:
+    model = tf.keras.models.load_model(MODEL_PATH, compile=False)
+except Exception:
+    import keras
+    model = keras.models.load_model(MODEL_PATH, compile=False)
 
 
 class_names = [
