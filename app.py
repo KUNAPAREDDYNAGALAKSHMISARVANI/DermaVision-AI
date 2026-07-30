@@ -60,13 +60,36 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
-MODEL_PATH_H5 = "model/best_model.h5"
-MODEL_PATH_KERAS = "model/best_model.keras"
+def build_and_load_model():
+    base_model = tf.keras.applications.MobileNetV2(
+        weights=None,
+        include_top=False,
+        input_shape=(224, 224, 3)
+    )
+    x = base_model.output
+    x = tf.keras.layers.GlobalAveragePooling2D()(x)
+    x = tf.keras.layers.Dropout(0.3)(x)
+    outputs = tf.keras.layers.Dense(9, activation="softmax")(x)
+    
+    net = tf.keras.models.Model(inputs=base_model.input, outputs=outputs)
 
-if os.path.exists(MODEL_PATH_H5):
-    model = tf.keras.models.load_model(MODEL_PATH_H5, compile=False)
-else:
-    model = tf.keras.models.load_model(MODEL_PATH_KERAS, compile=False)
+    weights_file = "model/model.weights.h5"
+    if os.path.exists(weights_file):
+        net.load_weights(weights_file)
+        return net
+
+    for path in ["model/best_model.h5", "model/best_model.keras"]:
+        if os.path.exists(path):
+            try:
+                m = tf.keras.models.load_model(path, compile=False)
+                net.set_weights(m.get_weights())
+                net.save_weights(weights_file)
+                return net
+            except Exception:
+                pass
+    return net
+
+model = build_and_load_model()
 
 
 class_names = [
