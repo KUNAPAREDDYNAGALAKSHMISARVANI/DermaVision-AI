@@ -1056,6 +1056,8 @@ def predict():
             2
         )
         
+        user_id = session.get("user_id")
+
         is_skin = is_skin_image(img, top_confidence=confidence)
 
         if not is_skin:
