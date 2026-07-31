@@ -78,6 +78,21 @@
     {% endif %}
 
     <!-- ========================= -->
+    <!-- Low Confidence / Unclear Image Alert Banner -->
+    <!-- ========================= -->
+    {% if is_low_confidence %}
+    <section class="low-confidence-alert-banner">
+        <div class="alert-icon-wrap amber-icon">
+            <i class="fas fa-circle-question"></i>
+        </div>
+        <div class="alert-content">
+            <h3>Low Confidence / Unclear Image Warning</h3>
+            <p>The AI model evaluated this image with <strong>{{ confidence }}%</strong> confidence, which is below our 50% reliability threshold. This can happen if the photo is blurry, poorly lit, taken from a distance, or does not contain a recognizable skin lesion. Please upload a clear, focused, close-up image for better accuracy.</p>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- ========================= -->
     <!-- Summary Section -->
     <!-- ========================= -->
 

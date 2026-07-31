@@ -477,6 +477,7 @@ def report(scan_id):
     image_url = "/static/" + scan["image"]
     high_risk_diseases = ["Melanoma", "Squamous cell carcinoma", "Actinic keratosis"]
     is_high_risk = scan["disease"] in high_risk_diseases
+    is_low_confidence = (scan["confidence"] < 50.0)
     all_doctors = load_doctors()
 
     return render_template(
@@ -487,6 +488,7 @@ def report(scan_id):
         confidence=scan["confidence"],
         disease_info=info,
         is_high_risk=is_high_risk,
+        is_low_confidence=is_low_confidence,
         recommended_doctors=all_doctors[:3]
     )
     
@@ -1019,9 +1021,15 @@ def predict():
             confidence
         )
 
-        info = disease_info[disease]
+        info = disease_info.get(disease, {
+            "description": "Information not available for this condition.",
+            "symptoms": ["Consult a dermatologist for evaluation."],
+            "causes": ["Unknown or unmapped condition."],
+            "precautions": ["Seek medical advice."]
+        })
         high_risk_diseases = ["Melanoma", "Squamous cell carcinoma", "Actinic keratosis"]
         is_high_risk = disease in high_risk_diseases
+        is_low_confidence = (confidence < 50.0)
         all_doctors = load_doctors()
 
         return render_template(
@@ -1032,6 +1040,7 @@ def predict():
             confidence=confidence,
             disease_info=info,
             is_high_risk=is_high_risk,
+            is_low_confidence=is_low_confidence,
             recommended_doctors=all_doctors[:3]
         )
 
