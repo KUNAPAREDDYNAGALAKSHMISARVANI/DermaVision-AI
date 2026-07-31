@@ -478,6 +478,11 @@ function applyLanguage(lang) {
         if (value) item.value = value;
     });
 
+    // Synchronize all dropdown selectors on the page
+    document.querySelectorAll('.lang-select-dropdown, #languageSelect, #settingsLanguageSelect').forEach(select => {
+        select.value = lang;
+    });
+
     document.documentElement.lang = lang;
     localStorage.setItem('language', lang);
 }
@@ -486,11 +491,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedLanguage = localStorage.getItem('language') || 'en';
     applyLanguage(savedLanguage);
 
-    const selector = document.getElementById('languageSelect');
-    if (selector) {
-        selector.value = savedLanguage;
+    document.querySelectorAll('.lang-select-dropdown, #languageSelect, #settingsLanguageSelect').forEach(selector => {
         selector.addEventListener('change', function () {
             applyLanguage(this.value);
         });
-    }
+    });
 });

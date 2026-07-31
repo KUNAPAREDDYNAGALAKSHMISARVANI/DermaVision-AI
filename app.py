@@ -54,6 +54,26 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     return round(R * c, 1)
 
 
+def is_skin_image(pil_img):
+    """Analyze RGB color distribution to check if image contains human skin."""
+    try:
+        small_img = pil_img.resize((100, 100)).convert("RGB")
+        pixels = list(small_img.getdata())
+        skin_count = 0
+        total_pixels = len(pixels)
+
+        for r, g, b in pixels:
+            if (r > 60 and g > 40 and b > 20 and
+                (max(r, g, b) - min(r, g, b) > 15) and
+                abs(r - g) > 15 and r > g and r > b):
+                skin_count += 1
+
+        skin_ratio = skin_count / total_pixels
+        return skin_ratio >= 0.15
+    except Exception:
+        return True
+
+
 UPLOAD_FOLDER = "static/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -476,8 +496,10 @@ def report(scan_id):
 
     image_url = "/static/" + scan["image"]
     high_risk_diseases = ["Melanoma", "Squamous cell carcinoma", "Actinic keratosis"]
-    is_high_risk = scan["disease"] in high_risk_diseases
-    is_low_confidence = (scan["confidence"] < 50.0)
+    is_non_skin = (scan["disease"] == "Non-Skin Image")
+    is_unrecognized_skin = (scan["confidence"] < 50.0 and not is_non_skin)
+    confidence_display = None if is_non_skin else scan["confidence"]
+
     all_doctors = load_doctors()
 
     return render_template(
@@ -485,10 +507,11 @@ def report(scan_id):
         image_path=scan["image"],
         image_url=image_url,
         disease=scan["disease"],
-        confidence=scan["confidence"],
+        confidence=confidence_display,
         disease_info=info,
         is_high_risk=is_high_risk,
-        is_low_confidence=is_low_confidence,
+        is_non_skin=is_non_skin,
+        is_unrecognized_skin=is_unrecognized_skin,
         recommended_doctors=all_doctors[:3]
     )
     
@@ -1012,24 +1035,40 @@ def predict():
             2
         )
         
-        user_id = session.get("user_id")
+        is_skin = is_skin_image(img)
 
-        save_scan(
-            user_id,
-            database_image,
-            disease,
-            confidence
-        )
+        if not is_skin:
+            is_non_skin = True
+            is_unrecognized_skin = False
+            disease = "Non-Skin Image Detected"
+            confidence_display = None
+            save_scan(user_id, database_image, "Non-Skin Image", 0.0)
+            info = {
+                "description": "The uploaded photo does not appear to contain human skin features. AI skin analysis requires a clear photo of human skin.",
+                "symptoms": ["No skin tissue identified."],
+                "causes": ["Uploaded an object, landscape, or non-skin photo."],
+                "precautions": [
+                    "Upload a clear, focused image of a skin lesion.",
+                    "Ensure adequate lighting without heavy shadows.",
+                    "Avoid submitting non-human objects or scenery."
+                ]
+            }
+            is_high_risk = False
+        else:
+            is_non_skin = False
+            confidence_display = confidence
+            is_unrecognized_skin = (confidence < 50.0)
+            save_scan(user_id, database_image, disease, confidence)
 
-        info = disease_info.get(disease, {
-            "description": "Information not available for this condition.",
-            "symptoms": ["Consult a dermatologist for evaluation."],
-            "causes": ["Unknown or unmapped condition."],
-            "precautions": ["Seek medical advice."]
-        })
-        high_risk_diseases = ["Melanoma", "Squamous cell carcinoma", "Actinic keratosis"]
-        is_high_risk = disease in high_risk_diseases
-        is_low_confidence = (confidence < 50.0)
+            info = disease_info.get(disease, {
+                "description": "Information not available for this condition.",
+                "symptoms": ["Consult a dermatologist for evaluation."],
+                "causes": ["Unknown or unmapped condition."],
+                "precautions": ["Seek medical advice."]
+            })
+            high_risk_diseases = ["Melanoma", "Squamous cell carcinoma", "Actinic keratosis"]
+            is_high_risk = disease in high_risk_diseases
+
         all_doctors = load_doctors()
 
         return render_template(
@@ -1037,10 +1076,11 @@ def predict():
             image_path=image_path,
             image_url="/" + image_path.replace("\\","/"),
             disease=disease,
-            confidence=confidence,
+            confidence=confidence_display,
             disease_info=info,
             is_high_risk=is_high_risk,
-            is_low_confidence=is_low_confidence,
+            is_non_skin=is_non_skin,
+            is_unrecognized_skin=is_unrecognized_skin,
             recommended_doctors=all_doctors[:3]
         )
 

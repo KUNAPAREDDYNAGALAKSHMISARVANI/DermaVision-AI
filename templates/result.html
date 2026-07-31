@@ -78,16 +78,31 @@
     {% endif %}
 
     <!-- ========================= -->
-    <!-- Low Confidence / Unclear Image Alert Banner -->
+    <!-- Non-Skin Image Alert Banner -->
     <!-- ========================= -->
-    {% if is_low_confidence %}
+    {% if is_non_skin %}
+    <section class="low-confidence-alert-banner" style="background:#fff7ed;border-color:#fdba74;">
+        <div class="alert-icon-wrap" style="color:#ea580c;">
+            <i class="fas fa-camera-rotate"></i>
+        </div>
+        <div class="alert-content">
+            <h3 style="color:#c2410c;">Non-Skin Image Detected</h3>
+            <p style="color:#9a3412;">The uploaded image does not contain recognizable human skin tissue. No confidence score is calculated for non-skin images. Please submit a clear, focused photo of a skin area for AI dermatology analysis.</p>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- ========================= -->
+    <!-- Unrecognized Skin Condition Alert Banner -->
+    <!-- ========================= -->
+    {% if is_unrecognized_skin %}
     <section class="low-confidence-alert-banner">
         <div class="alert-icon-wrap amber-icon">
             <i class="fas fa-circle-question"></i>
         </div>
         <div class="alert-content">
-            <h3>Low Confidence / Unclear Image Warning</h3>
-            <p>The AI model evaluated this image with <strong>{{ confidence }}%</strong> confidence, which is below our 50% reliability threshold. This can happen if the photo is blurry, poorly lit, taken from a distance, or does not contain a recognizable skin lesion. Please upload a clear, focused, close-up image for better accuracy.</p>
+            <h3>Unrecognized / Unmapped Skin Condition</h3>
+            <p>The AI model detected human skin, but evaluated this image with a low confidence score of <strong>{{ confidence }}%</strong>. This condition may not closely match the 9 primary trained skin disease categories. Please consult a qualified dermatologist for a clinical evaluation.</p>
         </div>
     </section>
     {% endif %}
@@ -146,6 +161,7 @@
 
                 </h1>
 
+                {% if confidence is not none %}
                 <div class="confidence-wrapper">
 
                     <div class="confidence-circle">
@@ -165,6 +181,11 @@
                     Model Confidence
 
                 </p>
+                {% else %}
+                <p class="confidence-label" style="color:#ea580c;font-weight:600;margin-top:15px;">
+                    <i class="fas fa-eye-slash"></i> Confidence Suppressed (Non-Skin Photo)
+                </p>
+                {% endif %}
 
             </div>
 
