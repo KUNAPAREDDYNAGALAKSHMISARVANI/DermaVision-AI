@@ -17,7 +17,7 @@ from database import (
     cancel_appointment
 )
 from flask import Flask, render_template, request, redirect, url_for, send_file, session, flash
-from PIL import Image
+from PIL import Image, ImageOps
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 
@@ -1028,10 +1028,9 @@ def predict():
     try:
 
         img = Image.open(image_path)
-
+        img = ImageOps.exif_transpose(img)
         img = img.convert("RGB")
-
-        img = img.resize((224,224))
+        img = img.resize((224, 224), Image.Resampling.LANCZOS if hasattr(Image, 'Resampling') else Image.LANCZOS)
 
 
         img_array = np.array(img)
