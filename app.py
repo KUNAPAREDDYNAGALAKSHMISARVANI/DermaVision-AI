@@ -497,15 +497,15 @@ def report(scan_id):
 
     if user_id:
         cursor.execute("SELECT * FROM scans WHERE id=? AND user_id=?", (scan_id, user_id))
-    else:
-        cursor.execute("SELECT * FROM scans WHERE id=? AND (user_id IS NULL OR user_id='')", (scan_id,))
+        scan = cursor.fetchone()
 
-    scan = cursor.fetchone()
+    if not user_id or scan is None:
+        cursor.execute("SELECT * FROM scans WHERE id=?", (scan_id,))
+        scan = cursor.fetchone()
 
     connection.close()
 
     if scan is None:
-
         return "Report not found or unauthorized.", 404
 
     info = disease_info.get(scan["disease"], {
@@ -515,8 +515,10 @@ def report(scan_id):
         "precautions": ["Seek medical advice."]
     })
 
-    image_url = "/static/" + scan["image"]
+    clean_img_path = scan["image"].lstrip("/").replace("static/", "")
+    image_url = "/static/" + clean_img_path
     high_risk_diseases = ["Melanoma", "Squamous cell carcinoma", "Actinic keratosis"]
+    is_high_risk = (scan["disease"] in high_risk_diseases)
     is_non_skin = (scan["disease"] == "Non-Skin Image")
     is_unrecognized_skin = (scan["confidence"] < 50.0 and not is_non_skin)
     confidence_display = None if is_non_skin else scan["confidence"]
@@ -525,7 +527,7 @@ def report(scan_id):
 
     return render_template(
         "result.html",
-        image_path=scan["image"],
+        image_path=clean_img_path,
         image_url=image_url,
         disease=scan["disease"],
         confidence=confidence_display,
@@ -548,10 +550,11 @@ def download_pdf(scan_id):
 
     if user_id:
         cursor.execute("SELECT * FROM scans WHERE id=? AND user_id=?", (scan_id, user_id))
-    else:
-        cursor.execute("SELECT * FROM scans WHERE id=? AND (user_id IS NULL OR user_id='')", (scan_id,))
+        scan = cursor.fetchone()
 
-    scan = cursor.fetchone()
+    if not user_id or scan is None:
+        cursor.execute("SELECT * FROM scans WHERE id=?", (scan_id,))
+        scan = cursor.fetchone()
 
     connection.close()
 
