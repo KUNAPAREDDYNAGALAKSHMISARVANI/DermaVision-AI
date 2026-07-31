@@ -193,6 +193,17 @@
 
     </section>
 
+    {% if is_non_skin %}
+    <!-- Non-Skin Guidance Box -->
+    <section class="glass-card">
+        <div class="section-title">
+            <i class="fas fa-camera-rotate" style="color:#ea580c;"></i>
+            <h2>Non-Skin Image Guidance</h2>
+        </div>
+        <p>The uploaded image does not appear to contain human skin tissue. Medical overviews, symptom checklists, causes, and treatment recommendations are omitted because no skin condition was identified.</p>
+        <p style="margin-top:10px;">To receive an AI dermatology evaluation, please click <strong>Scan Again</strong> below and upload a clear, focused photograph of a skin area.</p>
+    </section>
+    {% else %}
     <!-- ========================= -->
     <!-- Disease Overview -->
     <!-- ========================= -->
@@ -278,6 +289,7 @@
         </ul>
 
     </section>
+
     <!-- ========================= -->
     <!-- General Care Recommendations -->
     <!-- ========================= -->
@@ -323,6 +335,7 @@
         </div>
 
     </section>
+    {% endif %}
 
     <!-- ========================= -->
     <!-- When To Consult -->
