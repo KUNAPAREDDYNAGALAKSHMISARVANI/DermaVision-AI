@@ -5,12 +5,25 @@
 :root {
     --sidebar-width: 260px;
     --sidebar-collapsed-width: 76px;
+    --sidebar-bg: #ffffff;
+    --sidebar-text: #475569;
+    --sidebar-title: #0f172a;
+    --sidebar-hover-bg: #f1f5f9;
+    --sidebar-active-bg: #1976d2;
+    --sidebar-active-text: #ffffff;
+    --sidebar-border: #e2e8f0;
+    --topbar-height: 65px;
+}
+
+/* Dark Mode Variables Override */
+body.dark-mode, html.dark-mode {
     --sidebar-bg: #0f172a;
     --sidebar-text: #94a3b8;
-    --sidebar-text-active: #ffffff;
-    --sidebar-active-bg: #1e293b;
+    --sidebar-title: #ffffff;
+    --sidebar-hover-bg: rgba(255, 255, 255, 0.08);
+    --sidebar-active-bg: #1976d2;
+    --sidebar-active-text: #ffffff;
     --sidebar-border: #1e293b;
-    --topbar-height: 65px;
 }
 
 /* App Wrapper Layout */
@@ -32,7 +45,7 @@
     left: 0;
     height: 100vh;
     z-index: 1000;
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s, border-color 0.3s;
     border-right: 1px solid var(--sidebar-border);
     overflow-x: hidden;
 }
@@ -56,7 +69,7 @@ body.sidebar-collapsed .sidebar-nav {
     display: flex;
     align-items: center;
     gap: 12px;
-    color: #ffffff;
+    color: var(--sidebar-title);
     text-decoration: none;
     font-weight: 700;
     font-size: 1.15rem;
@@ -65,7 +78,7 @@ body.sidebar-collapsed .sidebar-nav {
 
 .sidebar-brand i {
     font-size: 1.5rem;
-    color: #38bdf8;
+    color: #1976d2;
     min-width: 32px;
     text-align: center;
 }
@@ -85,8 +98,8 @@ body.sidebar-collapsed .sidebar-nav {
 }
 
 .sidebar-toggle-btn:hover {
-    color: #ffffff;
-    background: var(--sidebar-active-bg);
+    color: var(--sidebar-title);
+    background: var(--sidebar-hover-bg);
 }
 
 /* Hide brand text when collapsed */
@@ -105,6 +118,26 @@ body.sidebar-collapsed .user-info {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+}
+
+/* Custom Sleek Scrollbar (No Ugly White Scrollbar) */
+.sidebar-content::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.3);
+    border-radius: 10px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.6);
 }
 
 .sidebar-group {
@@ -117,7 +150,7 @@ body.sidebar-collapsed .user-info {
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #64748b;
+    color: #94a3b8;
     font-weight: 700;
     padding: 6px 12px 4px;
     white-space: nowrap;
@@ -141,18 +174,19 @@ body.sidebar-collapsed .user-info {
     font-size: 1.15rem;
     min-width: 24px;
     text-align: center;
+    color: inherit;
 }
 
 .sidebar-link:hover {
-    background: rgba(255, 255, 255, 0.06);
-    color: #ffffff;
+    background: var(--sidebar-hover-bg);
+    color: var(--sidebar-title);
 }
 
 .sidebar-link.active {
-    background: #1976d2;
-    color: #ffffff;
+    background: var(--sidebar-active-bg);
+    color: var(--sidebar-active-text);
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.25);
 }
 
 /* Sidebar Footer Profile Area */
@@ -167,14 +201,14 @@ body.sidebar-collapsed .user-info {
     gap: 12px;
     padding: 10px 12px;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--sidebar-hover-bg);
 }
 
 .user-avatar-circle {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: #3b82f6;
+    background: #1976d2;
     color: #ffffff;
     display: flex;
     align-items: center;
@@ -191,7 +225,7 @@ body.sidebar-collapsed .user-info {
 .user-name {
     font-size: 0.88rem;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--sidebar-title);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -229,6 +263,7 @@ body.sidebar-collapsed .main-wrapper {
     top: 0;
     z-index: 900;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    transition: background 0.3s, border-color 0.3s;
 }
 
 .header-left {
@@ -260,7 +295,7 @@ body.sidebar-collapsed .main-wrapper {
     justify-content: center;
     color: var(--text-color, #334155);
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, color 0.2s;
 }
 
 .header-icon-btn:hover {
@@ -281,7 +316,15 @@ body.sidebar-collapsed .main-wrapper {
     transition: opacity 0.25s, visibility 0.25s;
 }
 
+.mobile-menu-trigger {
+    display: none;
+}
+
 @media (max-width: 900px) {
+    .mobile-menu-trigger {
+        display: flex;
+    }
+
     .sidebar-nav {
         transform: translateX(-100%);
         width: 260px !important;
