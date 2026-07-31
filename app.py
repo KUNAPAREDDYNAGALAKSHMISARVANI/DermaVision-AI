@@ -54,22 +54,43 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     return round(R * c, 1)
 
 
-def is_skin_image(pil_img):
-    """Analyze RGB color distribution to check if image contains human skin."""
+def is_skin_image(pil_img, top_confidence=100.0):
+    """
+    Multi-space (YCbCr + HSV + Confidence) skin presence validation.
+    Returns True if the image contains human skin, False otherwise.
+    """
     try:
-        small_img = pil_img.resize((100, 100)).convert("RGB")
+        small_img = pil_img.resize((120, 120)).convert("RGB")
         pixels = list(small_img.getdata())
         skin_count = 0
         total_pixels = len(pixels)
 
         for r, g, b in pixels:
-            if (r > 60 and g > 40 and b > 20 and
-                (max(r, g, b) - min(r, g, b) > 15) and
-                abs(r - g) > 15 and r > g and r > b):
+            # 1. Standard RGB Skin Thresholds
+            rgb_skin = (r > 60 and g > 40 and b > 20 and
+                        (max(r, g, b) - min(r, g, b) > 15) and
+                        abs(r - g) > 15 and r > g and r > b)
+
+            # 2. YCbCr Skin Color Space Transformation
+            y = 0.299 * r + 0.587 * g + 0.114 * b
+            cb = 128 - 0.168736 * r - 0.331264 * g + 0.5 * b
+            cr = 128 + 0.5 * r - 0.418688 * g - 0.081312 * b
+            ycbcr_skin = (80 <= cb <= 135) and (132 <= cr <= 173) and (y >= 40)
+
+            if rgb_skin and ycbcr_skin:
                 skin_count += 1
 
         skin_ratio = skin_count / total_pixels
-        return skin_ratio >= 0.15
+
+        # If skin pixel ratio is below 22%, it's definitely non-skin
+        if skin_ratio < 0.22:
+            return False
+
+        # If skin ratio is low (< 38%) and AI prediction confidence is low (< 50%), flag as non-skin
+        if skin_ratio < 0.38 and top_confidence < 50.0:
+            return False
+
+        return True
     except Exception:
         return True
 
@@ -1035,7 +1056,7 @@ def predict():
             2
         )
         
-        is_skin = is_skin_image(img)
+        is_skin = is_skin_image(img, top_confidence=confidence)
 
         if not is_skin:
             is_non_skin = True
