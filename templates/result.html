@@ -164,7 +164,7 @@
                 {% if confidence is not none %}
                 <div class="confidence-wrapper">
 
-                    <div class="confidence-circle">
+                    <div class="confidence-circle" style="--conf-deg: {{ (confidence * 3.6)|round(1) }}deg; --conf-color: {% if is_high_risk %}#ef4444{% elif is_unrecognized_skin %}#f59e0b{% else %}#1976d2{% endif %};">
 
                         <span>
 
