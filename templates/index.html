@@ -47,6 +47,7 @@ DermaVision AI | Intelligent Skin Disease Detection
 
         <p data-lang="supported_formats">Supported formats: JPG, JPEG, PNG</p>
 
+        {% if session.get('user_id') %}
         <form action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data">
 
             <input id="imageInput" type="file" name="image" accept="image/*" required hidden>
@@ -69,6 +70,17 @@ DermaVision AI | Intelligent Skin Disease Detection
             </div>
 
         </form>
+        {% else %}
+        <div class="auth-required-box" style="text-align:center;padding:30px 20px;background:rgba(255,255,255,0.05);border-radius:15px;border:1px dashed #3b82f6;">
+            <i class="fas fa-user-lock" style="font-size:2.5rem;color:#3b82f6;margin-bottom:15px;"></i>
+            <h3 style="margin-bottom:10px;">Account Login Required to Scan</h3>
+            <p style="color:#64748b;max-width:500px;margin:0 auto 20px;">Please log in or register a patient account to access the AI dermatology scanner, save scan history, track progress, and book consultations.</p>
+            <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+                <a href="{{ url_for('auth.login') }}" class="primary-btn"><i class="fas fa-right-to-bracket"></i> Login to Scan</a>
+                <a href="{{ url_for('auth.register') }}" class="secondary-btn"><i class="fas fa-user-plus"></i> Register Account</a>
+            </div>
+        </div>
+        {% endif %}
 
     </div>
 

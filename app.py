@@ -973,6 +973,11 @@ def clear_history():
 @app.route("/predict", methods=["POST"])
 def predict():
 
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Please log in or register an account to perform an AI skin scan.", "warning")
+        return redirect(url_for("auth.login"))
+
     if "image" not in request.files:
         return render_template(
             "index.html",
